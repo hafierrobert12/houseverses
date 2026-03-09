@@ -1,135 +1,204 @@
-:root {
-    --bg: #f7f2eb;
-    --primary: #5a3e2b;
-    --secondary: #8b6f5a;
-    --accent: #c1a58a;
-    --text: #3e2a1f;
+body{
+margin:0;
+
+background:
+linear-gradient(rgba(243,237,231,0.85),rgba(243,237,231,0.85)),
+url("https://upload.wikimedia.org/wikipedia/commons/5/57/Edgar_Degas_-_Danseuses_bleues.jpg");
+
+background-size:cover;
+background-attachment:fixed;
+
+color:#3A2A23;
+
+font-family:'Libre Baskerville',serif;
+
+line-height:1.7;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+
+h1,h2{
+font-family:'Playfair Display',serif;
 }
 
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: var(--bg);
-    color: var(--text);
-    line-height: 1.8;
+
+section{
+max-width:900px;
+margin:auto;
+padding:60px 20px;
 }
 
-/* HEADER */
-header {
-    text-align: center;
-    padding: 70px 20px 45px;
+
+.hero{
+text-align:center;
+padding:120px 20px;
+background:#BCAA91;
 }
 
-header h1 {
-    font-size: 3.2rem;
-    letter-spacing: 6px;
-    color: var(--primary);
+
+.tagline{
+font-style:italic;
+margin-top:10px;
 }
 
-header p {
-    margin-top: 12px;
-    color: var(--secondary);
-    font-weight: 300;
+
+.media iframe{
+margin-top:20px;
+border-radius:8px;
 }
 
-/* NAVIGATION */
-nav {
-    display: flex;
-    justify-content: center;
-    gap: 35px;
-    padding: 16px 0;
-    border-top: 1px solid var(--accent);
-    border-bottom: 1px solid var(--accent);
-    margin-bottom: 60px;
+
+.collection-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+margin-top:30px;
 }
 
-nav a {
-    text-decoration: none;
-    color: var(--primary);
-    font-weight: 500;
+
+.book{
+background:#EBC089;
+padding:20px;
+border-radius:8px;
+text-align:center;
+cursor:pointer;
+transition:0.3s;
 }
 
-/* CONTAINER */
-.container {
-    width: 85%;
-    max-width: 1050px;
-    margin: auto;
+
+.book:hover{
+transform:translateY(-5px);
 }
 
-/* DESCRIPTION */
-.description {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.05rem;
-    margin-bottom: 70px;
+
+.quote{
+font-family:'Cormorant Garamond',serif;
+font-size:22px;
+font-style:italic;
 }
 
-/* INFO GRID */
-.info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 40px;
-    margin-bottom: 80px;
+
+.hamburger{
+position:fixed;
+top:20px;
+right:25px;
+font-size:30px;
+cursor:pointer;
+z-index:1000;
 }
 
-.info-card {
-    background: #fffaf4;
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 15px 30px rgba(90,62,43,0.08);
+
+.side-menu{
+position:fixed;
+right:-250px;
+top:0;
+height:100%;
+width:250px;
+background:#543528;
+color:white;
+display:flex;
+flex-direction:column;
+padding-top:80px;
+transition:0.4s;
 }
 
-.info-card h2 {
-    color: var(--primary);
-    margin-bottom: 12px;
-    font-family: 'Playfair Display', serif;
+
+.side-menu a{
+padding:15px 30px;
+cursor:pointer;
 }
 
-.info-card p {
-    font-size: 0.95rem;
-    margin-bottom: 20px;
+
+.side-menu a:hover{
+background:#6E5137;
 }
 
-/* BUTTON */
-.btn {
-    display: inline-block;
-    text-decoration: none;
-    padding: 10px 22px;
-    background-color: var(--primary);
-    color: #fff;
-    border-radius: 30px;
-    font-size: 0.85rem;
+
+.post-box textarea{
+width:100%;
+height:80px;
 }
 
-/* VIDEOS */
-.videos {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    justify-content: space-between;
+
+.post{
+background:#ffffff;
+padding:20px;
+margin-top:20px;
+border-radius:8px;
 }
 
-.video-item {
-    flex: 1;
-    min-width: 260px;
-    aspect-ratio: 16 / 9;
+
+.post-actions span{
+margin-right:15px;
+cursor:pointer;
 }
 
-iframe {
-    width: 100%;
-    height: 100%;
-    border-radius: 14px;
+
+.login-modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+display:none;
+background:rgba(0,0,0,0.4);
+backdrop-filter:blur(8px);
+justify-content:center;
+align-items:center;
 }
 
-/* FOOTER */
-footer {
-    text-align: center;
-    padding: 40px;
-    margin-top: 80px;
-    font-size: 0.8rem;
-    color: var(--secondary);
+
+.login-box{
+background:white;
+padding:40px;
+border-radius:8px;
+width:300px;
+text-align:center;
+}
+
+
+.login-box input{
+width:100%;
+padding:10px;
+margin:10px 0;
+}
+
+
+.close{
+cursor:pointer;
+float:right;
+}
+
+
+.book-modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+display:none;
+background:rgba(0,0,0,0.4);
+backdrop-filter:blur(6px);
+justify-content:center;
+align-items:center;
+}
+
+
+.book-box{
+background:white;
+padding:40px;
+border-radius:8px;
+width:350px;
+}
+
+
+.telegram{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#543528;
+color:white;
+padding:14px;
+border-radius:50%;
+text-decoration:none;
+font-size:18px;
 }

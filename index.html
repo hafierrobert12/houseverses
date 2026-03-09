@@ -1,185 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<title>LILY — Digital Library of Literature and Art</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>LILY Digital Library</title>
 
 <link rel="stylesheet" href="style.css">
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Libre+Baskerville&family=Cormorant+Garamond&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Libre+Baskerville&display=swap" rel="stylesheet">
 
 </head>
 
 <body>
 
-<div class="hamburger" onclick="toggleMenu()">☰</div>
 
-<div id="sideMenu" class="side-menu">
+<header>
 
-<a onclick="scrollToSection('home')">Home</a>
-<a onclick="scrollToSection('library')">Library</a>
-<a onclick="scrollToSection('gallery')">Gallery</a>
-<a onclick="scrollToSection('forum')">Forum</a>
-<a onclick="scrollToSection('quote')">Daily Quote</a>
-<a onclick="scrollToSection('correspondence')">Correspondence</a>
-<a onclick="openLogin()">Sign In</a>
+<div class="logo">LILY</div>
 
-</div>
+<button id="hamburger">☰</button>
+
+<nav id="nav">
+
+<a href="#home">Home</a>
+<a href="#library">Library</a>
+<a href="#gallery">Gallery</a>
+<a href="#forum">Forum</a>
+<a href="#quote">Quote</a>
+<a href="#contact">Correspondence</a>
+
+</nav>
+
+</header>
+
+
 
 <section id="home" class="hero">
 
-<h1>LILY</h1>
+<div class="hero-text">
 
-<p class="tagline">
-A quiet digital library of literature and art
-</p>
+<h1>LILY Digital Library</h1>
+
+<p>A quiet digital archive of literature and art.</p>
+
+</div>
 
 </section>
+
 
 
 <section class="media">
 
 <h2>Quiet Media</h2>
 
-<iframe width="100%" height="300"
-src="https://www.youtube.com/embed/BLZKc0AnU7o">
-</iframe>
-
 <iframe
-allow="autoplay *; encrypted-media *;"
+width="560"
+height="315"
+src="https://www.youtube.com/embed/8xJHhRk6j1w"
 frameborder="0"
-height="90"
-style="width:100%"
-src="https://embed.music.apple.com/us/song/intro-end-of-the-world-extended-instrumental/1806174621">
+allowfullscreen>
 </iframe>
 
 </section>
 
 
+
 <section id="library">
 
-<h2>Featured Collection</h2>
+<h2>Literature Collection</h2>
 
-<div class="collection-grid">
+<div class="slider">
 
-<div class="book" onclick="openBook('The Picture of Dorian Gray','A philosophical novel about beauty and morality.')">The Picture of Dorian Gray</div>
+<button class="slide-btn" id="bookLeft">‹</button>
 
-<div class="book" onclick="openBook('Leaves of Grass','A poetry collection celebrating humanity and nature.')">Leaves of Grass</div>
+<div class="slides" id="bookSlides">
 
-<div class="book" onclick="openBook('The Waste Land','A modernist poem exploring fragmentation and culture.')">The Waste Land</div>
+<div class="book">
+<img src="https://covers.openlibrary.org/b/id/8231856-L.jpg">
+<p>The Picture of Dorian Gray</p>
+</div>
 
-<div class="book" onclick="openBook('Emily Dickinson Poems','Selected poems exploring solitude and the inner self.')">Emily Dickinson</div>
+<div class="book">
+<img src="https://covers.openlibrary.org/b/id/7222246-L.jpg">
+<p>Leaves of Grass</p>
+</div>
 
-<div class="book" onclick="openBook('Pride and Prejudice','A classic novel about love and society.')">Pride and Prejudice</div>
+<div class="book">
+<img src="https://covers.openlibrary.org/b/id/11153235-L.jpg">
+<p>The Waste Land</p>
+</div>
 
-<div class="book" onclick="openBook('The Odyssey','Epic journey of Odysseus returning home.')">The Odyssey</div>
+<div class="book">
+<img src="https://covers.openlibrary.org/b/id/8091016-L.jpg">
+<p>Pride and Prejudice</p>
+</div>
+
+<div class="book">
+<img src="https://covers.openlibrary.org/b/id/8231996-L.jpg">
+<p>The Odyssey</p>
+</div>
+
+</div>
+
+<button class="slide-btn" id="bookRight">›</button>
 
 </div>
 
 </section>
 
 
+
 <section id="gallery">
 
-<h2>Art Gallery</h2>
+<h2>Art Gallery Preview</h2>
 
-<p class="description">
-Literature often walks beside the visual arts.
-This gallery highlights paintings and artistic works
-that resonate with the quiet emotions found in literature.
-</p>
+<div class="slider">
+
+<button class="slide-btn" id="left">‹</button>
+
+<div class="slides" id="slides">
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Mona_Lisa.jpg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/e/ea/The_Starry_Night.jpg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Meisje_met_de_parel.jpg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/The_Kiss_-_Gustav_Klimt.jpg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/1/1c/Birth_of_Venus_Botticelli.jpg">
+
+</div>
+
+<button class="slide-btn" id="right">›</button>
+
+</div>
 
 </section>
+
 
 
 <section id="quote">
 
 <h2>Quote of the Day</h2>
 
-<p class="quote" id="dailyQuote"></p>
+<p id="dailyQuote"></p>
 
 </section>
+
 
 
 <section id="forum">
 
 <h2>Community Forum</h2>
 
-<div class="post-box">
+<input id="username" placeholder="username">
 
-<input id="username" placeholder="username (leave empty for anonymous)">
-<textarea id="postContent" placeholder="Share your thoughts about a book..."></textarea>
+<textarea id="message" placeholder="Share your thoughts about a book"></textarea>
 
-<button onclick="addPost()">Post</button>
-
-</div>
+<button id="postBtn">Post</button>
 
 <div id="posts"></div>
 
 </section>
 
 
-<section id="correspondence">
+
+<section id="contact">
 
 <h2>Correspondence</h2>
 
-<p>Email: hafiersihombing05@gmail.com</p>
+<p>Email: haferishombing05@gmail.com</p>
 
-<a target="_blank"
-href="https://drive.google.com/file/d/1MIJDx16kedmmkja18JaSrJ6Y3DdFcspg/view">
-View CV
-</a>
-
-<br><br>
-
-<textarea placeholder="Share your thoughts..."></textarea>
+<textarea placeholder="Send a message"></textarea>
 
 <button>Send</button>
 
 </section>
 
 
-<div id="loginModal" class="login-modal">
 
-<div class="login-box">
+<footer>
 
-<span class="close" onclick="closeLogin()">✕</span>
+           <p>© 2026 LILY Digital Library</p>
 
-<h3>Library Sign In</h3>
-
-<input placeholder="Username">
-<input type="password" placeholder="Password">
-
-<button>Login</button>
-
-</div>
-
-</div>
-
-
-<div id="bookModal" class="book-modal">
-
-<div class="book-box">
-
-<span onclick="closeBook()">✕</span>
-
-<h3 id="bookTitle"></h3>
-
-<p id="bookDesc"></p>
-
-</div>
-
-</div>
-
-
-<a class="telegram"
-href="https://t.me/+6283116947380"
-target="_blank">
-
-✉
-
-</a>
-
+</footer>
 
 <script src="script.js"></script>
 

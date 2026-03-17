@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>House of Verses · Sign In</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #0a0e1a;
+  --panel-bg:  #0d1120;
+  --blue-deep: #0f1935;
+  --blue-mid:  #1a2a5e;
+  --blue-glow: #2d4cad;
+  --accent:    #4a7cff;
+  --accent2:   #7b5ea7;
+  --cyan:      #38c8d8;
+  --white:     #ffffff;
+  --off-white: #f0f4ff;
+  --muted:     #8896b3;
+  --border:    rgba(74,124,255,0.18);
+  --card-bg:   rgba(255,255,255,0.97);
+  --glow:      rgba(74,124,255,0.35);
+}
+
+html, body { height: 100%; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #060a14 0%, #0a1228 50%, #080d1e 100%);
+  position: relative;
+}
+
+/* ── AMBIENT BG GLOW ── */
+.ambient {
+  position: fixed; pointer-events: none; z-index: 0;
+  border-radius: 50%; filter: blur(100px);
+}
+.am1 { width: 600px; height: 600px; background: rgba(45,76,173,.18); top: -200px; right: -100px; }
+.am2 { width: 400px; height: 400px; background: rgba(123,94,167,.14); bottom: -150px; left: -100px; }
+.am3 { width: 300px; height: 300px; background: rgba(56,200,216,.08); top: 40%; left: 30%; animation: amPulse 8s ease-in-out infinite; }
+@keyframes amPulse { 0%,100%{opacity:.5;transform:scale(1)} 50%{opacity:1;transform:scale(1.2)} }
+
+/* ── MAIN CARD ── */
+.card {
+  position: relative; z-index: 10;
+  width: 100%; max-width: 980px;
+  min-height: 580px;
+  display: grid;
+  grid-template-columns: 52% 48%;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow:
+    0 50px 120px rgba(0,0,0,.6),
+    0 0 0 1px rgba(74,124,255,.15),
+    inset 0 1px 0 rgba(255,255,255,.06);
+  animation: cardIn .7s cubic-bezier(.34,1.4,.64,1) both;
+}
+@keyframes cardIn {
+  from { opacity:0; transform:scale(.9) translateY(30px); }
+  to   { opacity:1; transform:scale(1)  translateY(0); }
+}
+
+/* ══════════════════════════════════
+   LEFT — FORM PANEL (light)
+══════════════════════════════════ */
+.form-panel {
+  background: var(--card-bg);
+  padding: 52px 48px;
+  display: flex; flex-direction: column; justify-content: center;
+  position: relative; z-index: 2;
+}
+
+/* subtle texture */
+.form-panel::before {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 80% 60% at 20% 0%, rgba(74,124,255,.04) 0%, transparent 60%);
+}
+
+.brand {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 36px;
+}
+.brand-icon {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 14px rgba(74,124,255,.4);
+}
+.brand-icon svg { width: 18px; height: 18px; }
+.brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem; font-weight: 700;
+  color: #1a1f36;
+}
+.brand-name span { color: var(--accent); }
+
+.form-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.7rem; font-weight: 800;
+  color: #0d1120; letter-spacing: -.03em;
+  margin-bottom: 6px;
+}
+.form-sub {
+  font-size: .83rem; color: #8896b3; font-weight: 500;
+  margin-bottom: 28px; line-height: 1.5;
+}
+
+/* name row */
+.name-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin-bottom: 14px;
+}
+.fg { margin-bottom: 14px; }
+.fg:last-of-type { margin-bottom: 0; }
+
+label {
+  display: block; font-size: .72rem; font-weight: 700;
+  color: #5a6580; margin-bottom: 5px;
+  letter-spacing: .06em; text-transform: uppercase;
+}
+
+input[type=text], input[type=email], input[type=password] {
+  width: 100%; padding: 11px 14px;
+  border: 1.5px solid #e4e8f2;
+  border-radius: 10px;
+  font-family: 'Nunito', sans-serif;
+  font-size: .87rem; color: #0d1120;
+  background: #f8faff; outline: none;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+}
+input:focus {
+  border-color: var(--accent);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(74,124,255,.12);
+}
+input::placeholder { color: #b8c0d4; font-weight: 400; }
+
+.pw-wrap { position: relative; }
+.pw-wrap input { padding-right: 42px; }
+.pw-eye {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer;
+  font-size: .9rem; color: #b8c0d4; padding: 0; transition: color .2s;
+}
+.pw-eye:hover { color: var(--accent); }
+
+.terms-row {
+  display: flex; align-items: flex-start; gap: 8px;
+  margin: 14px 0 16px; font-size: .74rem; color: #8896b3; line-height: 1.5;
+}
+.terms-row input[type=checkbox] {
+  width: 14px; height: 14px; accent-color: var(--accent);
+  cursor: pointer; flex-shrink: 0; margin-top: 2px;
+}
+.terms-row label {
+  text-transform: none; letter-spacing: 0; font-weight: 500;
+  color: #8896b3; font-size: .74rem; margin-bottom: 0;
+}
+.terms-row a { color: var(--accent); font-weight: 700; text-decoration: none; }
+.terms-row a:hover { text-decoration: underline; }
+
+.btn-main {
+  width: 100%; padding: 13px;
+  background: linear-gradient(135deg, var(--accent) 0%, #3a5fd8 100%);
+  color: white; border: none; border-radius: 11px;
+  font-family: 'Nunito', sans-serif;
+  font-size: .92rem; font-weight: 800; letter-spacing: .04em;
+  cursor: pointer; text-transform: uppercase;
+  box-shadow: 0 6px 22px rgba(74,124,255,.45);
+  transition: opacity .2s, transform .15s, box-shadow .2s;
+  margin-bottom: 14px;
+}
+.btn-main:hover { opacity: .92; transform: translateY(-1px); box-shadow: 0 10px 30px rgba(74,124,255,.5); }
+.btn-main:active { transform: translateY(0); }
+
+.divider {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 13px; color: #c0c8d8; font-size: .71rem; font-weight: 600;
+}
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #e4e8f2; }
+
+.btn-google {
+  width: 100%; padding: 11px; background: #fff; color: #4a5568;
+  border: 1.5px solid #e4e8f2; border-radius: 11px;
+  font-family: 'Nunito', sans-serif; font-size: .85rem; font-weight: 700; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  transition: border-color .2s, box-shadow .2s; margin-bottom: 20px;
+}
+.btn-google:hover { border-color: var(--accent); box-shadow: 0 2px 10px rgba(74,124,255,.1); }
+
+.signin-row { text-align: center; font-size: .78rem; color: #8896b3; font-weight: 500; }
+.signin-row a { color: var(--accent); font-weight: 700; text-decoration: none; }
+.signin-row a:hover { text-decoration: underline; }
+
+/* ══════════════════════════════════
+   RIGHT — 3D WORLD PANEL
+══════════════════════════════════ */
+.world-panel {
+  position: relative; overflow: hidden;
+  background: linear-gradient(155deg, #0f1935 0%, #111d45 35%, #0d1628 65%, #0a1020 100%);
+}
+
+/* Large glowing circle — like reference */
+.orb-ring {
+  position: absolute;
+  width: 110%;
+  padding-bottom: 110%;
+  border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-52%, -50%);
+  background: radial-gradient(ellipse at 40% 35%,
+    rgba(74,124,255,.22) 0%,
+    rgba(45,76,173,.18) 30%,
+    rgba(15,25,60,.4) 60%,
+    transparent 72%
+  );
+  pointer-events: none; z-index: 1;
+}
+.orb-ring::before {
+  content: '';
+  position: absolute; inset: 8%;
+  border-radius: 50%;
+  border: 1px solid rgba(74,124,255,.15);
+  box-shadow: inset 0 0 60px rgba(74,124,255,.08);
+}
+.orb-ring::after {
+  content: '';
+  position: absolute; inset: 20%;
+  border-radius: 50%;
+  border: 1px solid rgba(74,124,255,.08);
+}
+
+/* star particles */
+.star {
+  position: absolute; border-radius: 50%;
+  background: white; pointer-events: none; z-index: 1;
+  animation: twinkle 3s ease-in-out infinite;
+}
+@keyframes twinkle { 0%,100%{opacity:.2;transform:scale(.8)} 50%{opacity:.9;transform:scale(1.2)} }
+
+/* world text */
+.world-title {
+  position: absolute; top: 10%; left: 50%;
+  transform: translateX(-50%);
+  z-index: 8; text-align: center;
+  pointer-events: none;
+}
+.world-title h2 {
+  font-family: 'Playfair Display', serif;
+  font-style: italic; font-size: 1.25rem; font-weight: 600;
+  color: rgba(255,255,255,.9);
+  text-shadow: 0 0 30px rgba(74,124,255,.6);
+  white-space: nowrap;
+}
+.world-title p {
+  font-size: .68rem; font-weight: 700; letter-spacing: .12em;
+  color: rgba(120,160,255,.7); text-transform: uppercase; margin-top: 4px;
+}
+
+/* ── FLOATING OBJECTS LAYER ── */
+#floatLayer {
+  position: absolute; inset: 0; z-index: 5;
+  pointer-events: none;
+}
+
+/* Each floating object */
+.fobj {
+  position: absolute;
+  pointer-events: none;
+  will-change: transform;
+  /* individual positions set inline */
+}
+.fobj svg, .fobj .obj-inner {
+  filter: drop-shadow(0 8px 20px rgba(0,0,0,.5));
+  animation: objFloat var(--dur, 6s) ease-in-out infinite var(--delay, 0s);
+}
+@keyframes objFloat {
+  0%,100% { transform: translateY(0px) rotate(var(--rot0, -5deg)); }
+  50%      { transform: translateY(var(--ty, -14px)) rotate(var(--rot1, 5deg)); }
+}
+
+/* glow halos around objects */
+.fobj::after {
+  content: '';
+  position: absolute; inset: -8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--halo, rgba(74,124,255,.18)) 0%, transparent 70%);
+  pointer-events: none;
+  animation: haloP var(--dur, 6s) ease-in-out infinite var(--delay, 0s);
+}
+@keyframes haloP {
+  0%,100% { opacity: .6; transform: scale(1); }
+  50%      { opacity: 1;  transform: scale(1.15); }
+}
+
+/* ── OBJECT SVG STYLES ── */
+/* Book */
+.book-cover {
+  rx: 4px;
+}
+
+/* connection lines between objects */
+.conn-line {
+  position: absolute; pointer-events: none; z-index: 4;
+  opacity: .18;
+}
+
+/* toast */
+#toast {
+  position: fixed; bottom: 22px; left: 50%;
+  transform: translateX(-50%) translateY(60px);
+  background: #1a2a5e; color: white;
+  border: 1px solid rgba(74,124,255,.3);
+  font-family: 'Nunito', sans-serif; font-size: .82rem; font-weight: 600;
+  padding: 10px 24px; border-radius: 40px;
+  z-index: 200; pointer-events: none; opacity: 0;
+  transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .3s;
+  box-shadow: 0 8px 24px rgba(0,0,0,.4);
+}
+#toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+@media(max-width:700px) {
+  .card { grid-template-columns: 1fr; }
+  .world-panel { min-height: 260px; }
+  .form-panel { padding: 30px 24px; }
+  .name-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="ambient am1"></div>
+<div class="ambient am2"></div>
+<div class="ambient am3"></div>
+
+<div class="card">
+
+  <!-- ══ LEFT: FORM ══ -->
+  <div class="form-panel">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
+          <path d="M2 6s1.5-2 5-2 5 2 5 2v14s-1.5-1-5-1-5 1-5 1V6z"/>
+          <path d="M12 6s1.5-2 5-2 5 2 5 2v14s-1.5-1-5-1-5 1-5 1V6z"/>
+        </svg>
+      </div>
+      <div class="brand-name">House of <span>Verses</span></div>
+    </div>
+
+    <h1 class="form-title">Create your account</h1>
+    <p class="form-sub">Join the literary sanctuary — where every verse finds its reader.</p>
+
+    <div class="name-row">
+      <div class="fg" style="margin-bottom:0">
+        <label>First Name</label>
+        <input type="text" id="fn" placeholder="Ada" autocomplete="given-name">
+      </div>
+      <div class="fg" style="margin-bottom:0">
+        <label>Last Name</label>
+        <input type="text" id="ln" placeholder="Lovelace" autocomplete="family-name">
+      </div>
+    </div>
+    <div style="height:14px"></div>
+    <div class="fg">
+      <label>Email Address</label>
+      <input type="email" id="em" placeholder="you@example.com" autocomplete="email">
+    </div>
+    <div class="fg">
+      <label>Password</label>
+      <div class="pw-wrap">
+        <input type="password" id="pw" placeholder="Min. 8 characters" autocomplete="new-password">
+        <button class="pw-eye" id="pwBtn" onclick="togglePw()" type="button">👁️</button>
+      </div>
+    </div>
+    <div class="terms-row">
+      <input type="checkbox" id="terms">
+      <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+    </div>
+
+    <button class="btn-main" onclick="doSignUp()">Create Account</button>
+    <div class="divider">or continue with</div>
+    <button class="btn-google">
+      <svg width="16" height="16" viewBox="0 0 24 24">
+        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+      </svg>
+      Google
+    </button>
+    <div class="signin-row">Already have an account? <a href="#">Sign in</a></div>
+  </div>
+
+  <!-- ══ RIGHT: 3D WORLD ══ -->
+  <div class="world-panel" id="worldPanel">
+    <div class="orb-ring"></div>
+
+    <!-- stars -->
+    <div class="star" style="width:2px;height:2px;top:12%;left:18%;animation-delay:.5s"></div>
+    <div class="star" style="width:3px;height:3px;top:22%;left:72%;animation-delay:1.2s"></div>
+    <div class="star" style="width:2px;height:2px;top:65%;left:15%;animation-delay:2s"></div>
+    <div class="star" style="width:2px;height:2px;top:78%;left:80%;animation-delay:.8s"></div>
+    <div class="star" style="width:3px;height:3px;top:45%;left:88%;animation-delay:1.8s"></div>
+    <div class="star" style="width:2px;height:2px;top:8%;left:55%;animation-delay:3s"></div>
+    <div class="star" style="width:2px;height:2px;top:90%;left:40%;animation-delay:1.5s"></div>
+
+    <!-- world label -->
+    <div class="world-title">
+      <h2>"A sanctuary of words"</h2>
+      <p>House of Verses · Literary World</p>
+    </div>
+
+    <!-- SVG connection lines -->
+    <svg class="conn-line" style="inset:0;width:100%;height:100%;position:absolute;" id="connSvg">
+      <line id="cl1" stroke="rgba(74,124,255,.4)" stroke-width="1" stroke-dasharray="4 4"/>
+      <line id="cl2" stroke="rgba(74,124,255,.4)" stroke-width="1" stroke-dasharray="4 4"/>
+      <line id="cl3" stroke="rgba(74,124,255,.4)" stroke-width="1" stroke-dasharray="4 4"/>
+      <line id="cl4" stroke="rgba(56,200,216,.35)" stroke-width="1" stroke-dasharray="4 4"/>
+      <line id="cl5" stroke="rgba(123,94,167,.4)" stroke-width="1" stroke-dasharray="4 4"/>
+    </svg>
+
+    <!-- FLOATING OBJECTS -->
+    <div id="floatLayer">
+
+      <!-- 1. Open Book (center-ish, large) -->
+      <div class="fobj" id="obj0"
+           style="--dur:5.5s;--delay:0s;--ty:-16px;--rot0:-4deg;--rot1:4deg;--halo:rgba(74,124,255,.25);
+                  left:50%;top:38%;transform:translate(-50%,-50%)">
+        <svg width="90" height="72" viewBox="0 0 90 72" fill="none">
+          <!-- left page -->
+          <path d="M45 10 Q25 8 8 14 L8 62 Q26 56 45 60 Z" fill="#1e2d6b" stroke="rgba(74,124,255,.5)" stroke-width="1"/>
+          <path d="M45 10 Q25 8 8 14 L8 62 Q26 56 45 60 Z" fill="url(#bookL)" opacity=".9"/>
+          <!-- right page -->
+          <path d="M45 10 Q65 8 82 14 L82 62 Q64 56 45 60 Z" fill="#1a2560" stroke="rgba(74,124,255,.5)" stroke-width="1"/>
+          <path d="M45 10 Q65 8 82 14 L82 62 Q64 56 45 60 Z" fill="url(#bookR)" opacity=".9"/>
+          <!-- spine -->
+          <line x1="45" y1="10" x2="45" y2="60" stroke="rgba(74,124,255,.6)" stroke-width="1.5"/>
+          <!-- text lines left -->
+          <line x1="15" y1="25" x2="40" y2="23" stroke="rgba(120,160,255,.35)" stroke-width="1"/>
+          <line x1="15" y1="32" x2="40" y2="30" stroke="rgba(120,160,255,.35)" stroke-width="1"/>
+          <line x1="15" y1="39" x2="38" y2="37" stroke="rgba(120,160,255,.25)" stroke-width="1"/>
+          <line x1="15" y1="46" x2="40" y2="44" stroke="rgba(120,160,255,.25)" stroke-width="1"/>
+          <!-- text lines right -->
+          <line x1="50" y1="25" x2="74" y2="23" stroke="rgba(120,160,255,.35)" stroke-width="1"/>
+          <line x1="50" y1="32" x2="74" y2="30" stroke="rgba(120,160,255,.35)" stroke-width="1"/>
+          <line x1="50" y1="39" x2="72" y2="37" stroke="rgba(120,160,255,.25)" stroke-width="1"/>
+          <line x1="50" y1="46" x2="74" y2="44" stroke="rgba(120,160,255,.25)" stroke-width="1"/>
+          <!-- glow on spine -->
+          <line x1="45" y1="10" x2="45" y2="60" stroke="rgba(74,124,255,.8)" stroke-width=".5" filter="url(#gfx)"/>
+          <defs>
+            <linearGradient id="bookL" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#2a3f8f"/><stop offset="100%" stop-color="#1a2560"/>
+            </linearGradient>
+            <linearGradient id="bookR" x1="1" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#243585"/><stop offset="100%" stop-color="#151d50"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <!-- 2. Quill Pen (top right) -->
+      <div class="fobj" id="obj1"
+           style="--dur:7s;--delay:-.8s;--ty:-18px;--rot0:-12deg;--rot1:8deg;--halo:rgba(56,200,216,.2);
+                  right:12%;top:18%">
+        <svg width="54" height="80" viewBox="0 0 54 80" fill="none">
+          <!-- feather shape -->
+          <path d="M27 4 C44 10 52 28 48 48 C44 58 34 64 27 76 C20 64 10 58 6 48 C2 28 10 10 27 4Z"
+                fill="url(#quillG)" opacity=".9"/>
+          <!-- central spine -->
+          <line x1="27" y1="4" x2="27" y2="76" stroke="rgba(200,220,255,.6)" stroke-width="1"/>
+          <!-- barbs left -->
+          <path d="M27 20 C20 22 12 24 8 28" stroke="rgba(200,220,255,.3)" stroke-width=".8" fill="none"/>
+          <path d="M27 30 C19 33 11 36 7 40" stroke="rgba(200,220,255,.3)" stroke-width=".8" fill="none"/>
+          <path d="M27 40 C20 43 13 46 8 50" stroke="rgba(200,220,255,.25)" stroke-width=".8" fill="none"/>
+          <!-- barbs right -->
+          <path d="M27 20 C34 22 42 24 46 28" stroke="rgba(200,220,255,.3)" stroke-width=".8" fill="none"/>
+          <path d="M27 30 C35 33 43 36 47 40" stroke="rgba(200,220,255,.3)" stroke-width=".8" fill="none"/>
+          <path d="M27 40 C34 43 41 46 46 50" stroke="rgba(200,220,255,.25)" stroke-width=".8" fill="none"/>
+          <!-- nib tip -->
+          <path d="M24 70 L27 76 L30 70 L27 65Z" fill="rgba(56,200,216,.8)"/>
+          <defs>
+            <linearGradient id="quillG" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="rgba(200,220,255,.7)"/>
+              <stop offset="60%" stop-color="rgba(120,160,255,.5)"/>
+              <stop offset="100%" stop-color="rgba(56,200,216,.6)"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <!-- 3. Closed Book (left side) -->
+      <div class="fobj" id="obj2"
+           style="--dur:6.5s;--delay:-1.5s;--ty:-12px;--rot0:8deg;--rot1:-6deg;--halo:rgba(123,94,167,.22);
+                  left:8%;top:30%">
+        <svg width="52" height="66" viewBox="0 0 52 66" fill="none">
+          <rect x="8" y="4" width="36" height="58" rx="3" fill="#7b5ea7" opacity=".85"/>
+          <rect x="8" y="4" width="36" height="58" rx="3" fill="url(#bkG)"/>
+          <rect x="6" y="4" width="6" height="58" rx="2" fill="#5a3f8a"/>
+          <!-- pages side -->
+          <rect x="44" y="6" width="3" height="54" rx="1" fill="rgba(200,210,255,.15)"/>
+          <!-- title lines -->
+          <rect x="16" y="20" width="20" height="2" rx="1" fill="rgba(255,255,255,.4)"/>
+          <rect x="18" y="26" width="16" height="1.5" rx="1" fill="rgba(255,255,255,.25)"/>
+          <rect x="20" y="31" width="12" height="1.5" rx="1" fill="rgba(255,255,255,.2)"/>
+          <!-- decorative line at top -->
+          <rect x="14" y="14" width="24" height="1" rx=".5" fill="rgba(200,180,255,.5)"/>
+          <rect x="14" y="50" width="24" height="1" rx=".5" fill="rgba(200,180,255,.5)"/>
+          <defs>
+            <linearGradient id="bkG" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#9b7ec7"/><stop offset="100%" stop-color="#5a3f8a"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <!-- 4. Scroll / Paper (bottom right) -->
+      <div class="fobj" id="obj3"
+           style="--dur:8s;--delay:-2.2s;--ty:-10px;--rot0:-6deg;--rot1:6deg;--halo:rgba(255,200,80,.15);
+                  right:8%;bottom:22%">
+        <svg width="56" height="70" viewBox="0 0 56 70" fill="none">
+          <!-- scroll body -->
+          <rect x="8" y="12" width="40" height="48" rx="2" fill="#1a2a5e"/>
+          <rect x="8" y="12" width="40" height="48" rx="2" fill="url(#scrG)" opacity=".9"/>
+          <!-- top curl -->
+          <ellipse cx="28" cy="12" rx="20" ry="6" fill="#243070"/>
+          <ellipse cx="28" cy="12" rx="20" ry="6" fill="url(#curlG)" opacity=".8"/>
+          <!-- bottom curl -->
+          <ellipse cx="28" cy="60" rx="20" ry="6" fill="#1a2560"/>
+          <!-- text lines -->
+          <line x1="16" y1="24" x2="40" y2="24" stroke="rgba(120,160,255,.4)" stroke-width="1"/>
+          <line x1="16" y1="30" x2="38" y2="30" stroke="rgba(120,160,255,.35)" stroke-width="1"/>
+          <line x1="16" y1="36" x2="40" y2="36" stroke="rgba(120,160,255,.3)" stroke-width="1"/>
+          <line x1="16" y1="42" x2="36" y2="42" stroke="rgba(120,160,255,.25)" stroke-width="1"/>
+          <line x1="16" y1="48" x2="40" y2="48" stroke="rgba(120,160,255,.2)" stroke-width="1"/>
+          <!-- wax seal dot -->
+          <circle cx="28" cy="54" r="5" fill="rgba(255,80,80,.5)"/>
+          <circle cx="28" cy="54" r="3" fill="rgba(255,100,100,.6)"/>
+          <defs>
+            <linearGradient id="scrG" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#2a3d8a"/><stop offset="100%" stop-color="#151e50"/>
+            </linearGradient>
+            <linearGradient id="curlG" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3a50a0"/><stop offset="100%" stop-color="#243070"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <!-- 5. Ink bottle (bottom left) -->
+      <div class="fobj" id="obj4"
+           style="--dur:6s;--delay:-3s;--ty:-14px;--rot0:5deg;--rot1:-5deg;--halo:rgba(74,124,255,.2);
+                  left:14%;bottom:18%">
+        <svg width="48" height="60" viewBox="0 0 48 60" fill="none">
+          <!-- bottle body -->
+          <path d="M12 28 Q8 30 8 40 L8 52 Q8 56 12 56 L36 56 Q40 56 40 52 L40 40 Q40 30 36 28 Z"
+                fill="url(#inkG)"/>
+          <!-- bottle neck -->
+          <rect x="17" y="14" width="14" height="16" rx="2" fill="#1a2a5e"/>
+          <!-- cap -->
+          <rect x="15" y="8" width="18" height="8" rx="3" fill="#2a3d8a"/>
+          <rect x="18" y="6" width="12" height="4" rx="2" fill="#3a50a0"/>
+          <!-- ink fill inside -->
+          <path d="M13 38 Q9 40 9 48 L9 52 Q9 55 12 55 L36 55 Q39 55 39 52 L39 48 Q39 40 35 38 Z"
+                fill="rgba(74,124,255,.55)"/>
+          <!-- shine -->
+          <ellipse cx="18" cy="38" rx="4" ry="6" fill="rgba(255,255,255,.08)"/>
+          <!-- label -->
+          <rect x="13" y="34" width="22" height="14" rx="2" fill="rgba(255,255,255,.06)" stroke="rgba(74,124,255,.3)" stroke-width=".5"/>
+          <defs>
+            <linearGradient id="inkG" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#1e2d70"/><stop offset="100%" stop-color="#0d1540"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <!-- 6. Stack of books (top left) -->
+      <div class="fobj" id="obj5"
+           style="--dur:9s;--delay:-1s;--ty:-8px;--rot0:-3deg;--rot1:3deg;--halo:rgba(56,200,216,.15);
+                  left:6%;top:12%">
+        <svg width="60" height="52" viewBox="0 0 60 52" fill="none">
+          <!-- bottom book -->
+          <rect x="4" y="34" width="52" height="12" rx="2" fill="#4a7cff" opacity=".7"/>
+          <rect x="4" y="34" width="6" height="12" rx="1" fill="#3a6aee"/>
+          <!-- mid book -->
+          <rect x="8" y="22" width="46" height="14" rx="2" fill="#7b5ea7" opacity=".8"/>
+          <rect x="8" y="22" width="6" height="14" rx="1" fill="#6a4e96"/>
+          <!-- top book -->
+          <rect x="10" y="10" width="42" height="14" rx="2" fill="#2d4cad" opacity=".9"/>
+          <rect x="10" y="10" width="6" height="14" rx="1" fill="#1e3d9e"/>
+          <!-- pages on right -->
+          <rect x="52" y="12" width="3" height="10" rx="1" fill="rgba(200,210,255,.2)"/>
+          <rect x="54" y="36" width="2" height="8" rx="1" fill="rgba(200,210,255,.15)"/>
+        </svg>
+      </div>
+
+      <!-- 7. Glowing letters / typography (top center) -->
+      <div class="fobj" id="obj6"
+           style="--dur:7.5s;--delay:-.5s;--ty:-20px;--rot0:-2deg;--rot1:2deg;--halo:rgba(74,124,255,.3);
+                  left:50%;top:14%;transform:translateX(-50%)">
+        <svg width="80" height="44" viewBox="0 0 80 44" fill="none">
+          <!-- decorative text "Aa" -->
+          <text x="8" y="36" font-family="Georgia,serif" font-size="38" font-style="italic"
+                fill="url(#txtG)" opacity=".85">Aa</text>
+          <!-- small sparkle dots -->
+          <circle cx="66" cy="8"  r="2.5" fill="rgba(74,124,255,.8)"/>
+          <circle cx="72" cy="16" r="1.5" fill="rgba(56,200,216,.7)"/>
+          <circle cx="62" cy="20" r="1.5" fill="rgba(74,124,255,.6)"/>
+          <defs>
+            <linearGradient id="txtG" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="rgba(150,190,255,.9)"/>
+              <stop offset="100%" stop-color="rgba(74,124,255,.7)"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <!-- 8. Bookmark ribbon (right mid) -->
+      <div class="fobj" id="obj7"
+           style="--dur:5s;--delay:-2.8s;--ty:-10px;--rot0:10deg;--rot1:-6deg;--halo:rgba(255,80,120,.15);
+                  right:6%;top:48%">
+        <svg width="28" height="56" viewBox="0 0 28 56" fill="none">
+          <path d="M4 2 L24 2 L24 50 L14 42 L4 50 Z" fill="url(#bkmG)"/>
+          <line x1="4" y1="14" x2="24" y2="14" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+          <defs>
+            <linearGradient id="bkmG" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ff5080"/><stop offset="100%" stop-color="#cc3060"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+    </div><!-- /floatLayer -->
+
+  </div><!-- /world-panel -->
+
+</div><!-- /card -->
+
+<div id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  PARALLAX FLOATING OBJECTS
+//  Each object has a depth factor — deeper = moves less
+// ═══════════════════════════════════════════════════════
+
+const panel = document.getElementById('worldPanel');
+
+// depth: 0=stationary, 1=max movement
+// Each object: [element_id, depth, base_x_offset, base_y_offset]
+const OBJECTS = [
+  { id:'obj0', depth:0.04 },  // center book — barely moves (anchor)
+  { id:'obj1', depth:0.14 },  // quill — floats a lot
+  { id:'obj2', depth:0.10 },  // closed book
+  { id:'obj3', depth:0.12 },  // scroll
+  { id:'obj4', depth:0.08 },  // ink bottle
+  { id:'obj5', depth:0.16 },  // book stack — moves most
+  { id:'obj6', depth:0.06 },  // letters
+  { id:'obj7', depth:0.18 },  // bookmark — moves most
+];
+
+const objs = OBJECTS.map(o => ({
+  el: document.getElementById(o.id),
+  depth: o.depth,
+  cx: 0, cy: 0,  // current offset
+}));
+
+// Connection line endpoints (pairs of object indices)
+const CONN_PAIRS = [[0,1],[0,2],[0,3],[0,4],[1,6]];
+const connLines = ['cl1','cl2','cl3','cl4','cl5'].map(id => document.getElementById(id));
+
+let mouseX = 0, mouseY = 0;
+let smX = 0, smY = 0;
+let panelRect = panel.getBoundingClientRect();
+
+window.addEventListener('resize', () => { panelRect = panel.getBoundingClientRect(); });
+setTimeout(() => { panelRect = panel.getBoundingClientRect(); }, 300);
+
+document.addEventListener('mousemove', e => {
+  // normalize mouse relative to panel center (-1 to 1)
+  panelRect = panel.getBoundingClientRect();
+  mouseX = ((e.clientX - panelRect.left - panelRect.width  / 2) / (panelRect.width  / 2));
+  mouseY = ((e.clientY - panelRect.top  - panelRect.height / 2) / (panelRect.height / 2));
+  // clamp
+  mouseX = Math.max(-1, Math.min(1, mouseX));
+  mouseY = Math.max(-1, Math.min(1, mouseY));
+});
+
+// Update SVG connection lines
+function updateLines() {
+  CONN_PAIRS.forEach((pair, i) => {
+    const a = objs[pair[0]].el;
+    const b = objs[pair[1]].el;
+    if (!a || !b || !connLines[i]) return;
+    const ar = a.getBoundingClientRect();
+    const br = b.getBoundingClientRect();
+    const pr = panelRect;
+    const ax = ar.left + ar.width/2  - pr.left;
+    const ay = ar.top  + ar.height/2 - pr.top;
+    const bx = br.left + br.width/2  - pr.left;
+    const by_ = br.top  + br.height/2 - pr.top;
+    connLines[i].setAttribute('x1', ax);
+    connLines[i].setAttribute('y1', ay);
+    connLines[i].setAttribute('x2', bx);
+    connLines[i].setAttribute('y2', by_);
+  });
+}
+
+// RAF loop
+const MAX_MOVE = 55; // max px travel
+const LR = 0.055;
+
+requestAnimationFrame(function loop() {
+  smX += (mouseX - smX) * LR;
+  smY += (mouseY - smY) * LR;
+
+  objs.forEach(obj => {
+    if (!obj.el) return;
+    const tx = -smX * MAX_MOVE * obj.depth * 8;
+    const ty = -smY * MAX_MOVE * obj.depth * 8;
+    obj.cx += (tx - obj.cx) * 0.08;
+    obj.cy += (ty - obj.cy) * 0.08;
+    // Preserve existing CSS transform (translateX/Y from positioning)
+    // We add parallax as additional translate
+    const base = obj.el.style.transform || '';
+    // strip previous parallax
+    const clean = base.replace(/translateZ\([^)]*\)| ?parallax\([^)]*\)/g, '');
+    obj.el.style.transform = clean + ` translate(${obj.cx.toFixed(1)}px, ${obj.cy.toFixed(1)}px)`;
+  });
+
+  updateLines();
+  requestAnimationFrame(loop);
+});
+
+// ═══════════════════════════════════════════════════════
+//  FORM
+// ═══════════════════════════════════════════════════════
+function togglePw() {
+  const i = document.getElementById('pw');
+  const b = document.getElementById('pwBtn');
+  i.type = i.type === 'password' ? 'text' : 'password';
+  b.textContent = i.type === 'password' ? '👁️' : '🙈';
+}
+
+function doSignUp() {
+  const fn = document.getElementById('fn').value.trim();
+  const ln = document.getElementById('ln').value.trim();
+  const em = document.getElementById('em').value.trim();
+  const pw = document.getElementById('pw').value;
+  const ok = document.getElementById('terms').checked;
+  if (!fn||!ln||!em||!pw) return toast('⚠️ Please fill in all fields.');
+  if (pw.length < 8)       return toast('🔑 Password needs 8+ characters.');
+  if (!ok)                 return toast('📜 Please agree to the Terms first.');
+  toast(`✨ Welcome, ${fn}! Your library awaits.`);
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+</script>
+</body>
+</html>

@@ -9,7 +9,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:        #0a0e1a;
+  --bg:        #06090f;
   --panel-bg:  #0d1120;
   --blue-deep: #0f1935;
   --blue-mid:  #1a2a5e;
@@ -17,6 +17,8 @@
   --accent:    #4a7cff;
   --accent2:   #7b5ea7;
   --cyan:      #38c8d8;
+  --gold:      #f5c842;
+  --rose:      #ff6090;
   --white:     #ffffff;
   --off-white: #f0f4ff;
   --muted:     #8896b3;
@@ -33,33 +35,53 @@ body {
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
   overflow: hidden;
-  background: linear-gradient(135deg, #060a14 0%, #0a1228 50%, #080d1e 100%);
+  background: #06090f;
   position: relative;
 }
 
-/* ── AMBIENT BG GLOW ── */
-.ambient {
-  position: fixed; pointer-events: none; z-index: 0;
-  border-radius: 50%; filter: blur(100px);
+/* ── RICH LAYERED BACKGROUND ── */
+.bg-base {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 75% 50%, rgba(18,32,90,.95) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 80% at 20% 80%, rgba(40,15,70,.7) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 80% 10%, rgba(10,25,70,.8) 0%, transparent 50%),
+    linear-gradient(160deg, #06090f 0%, #080e20 40%, #060818 100%);
 }
-.am1 { width: 600px; height: 600px; background: rgba(45,76,173,.18); top: -200px; right: -100px; }
-.am2 { width: 400px; height: 400px; background: rgba(123,94,167,.14); bottom: -150px; left: -100px; }
-.am3 { width: 300px; height: 300px; background: rgba(56,200,216,.08); top: 40%; left: 30%; animation: amPulse 8s ease-in-out infinite; }
-@keyframes amPulse { 0%,100%{opacity:.5;transform:scale(1)} 50%{opacity:1;transform:scale(1.2)} }
+
+/* Nebula / aurora layers */
+.nebula {
+  position: fixed; pointer-events: none; z-index: 0;
+  border-radius: 50%; filter: blur(80px); mix-blend-mode: screen;
+}
+.nb1 { width:700px;height:500px;background:rgba(35,70,200,.13);top:-100px;right:-150px;animation:nbPulse 12s ease-in-out infinite; }
+.nb2 { width:500px;height:600px;background:rgba(100,40,160,.1);bottom:-200px;left:-100px;animation:nbPulse 15s ease-in-out infinite 3s; }
+.nb3 { width:400px;height:300px;background:rgba(56,200,216,.07);top:30%;left:25%;animation:nbPulse 10s ease-in-out infinite 6s; }
+.nb4 { width:350px;height:350px;background:rgba(245,200,66,.05);top:10%;left:60%;animation:nbPulse 18s ease-in-out infinite 2s; }
+.nb5 { width:250px;height:250px;background:rgba(255,80,144,.06);bottom:20%;right:30%;animation:nbPulse 9s ease-in-out infinite 4s; }
+@keyframes nbPulse { 0%,100%{opacity:.4;transform:scale(1) translate(0,0)} 33%{opacity:.9;transform:scale(1.15) translate(2%,-1%)} 66%{opacity:.6;transform:scale(.95) translate(-1%,2%)} }
+
+/* Fine grain texture overlay */
+.grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: .025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px;
+}
 
 /* ── MAIN CARD ── */
 .card {
   position: relative; z-index: 10;
-  width: 100%; max-width: 980px;
-  min-height: 580px;
+  width: 100%; max-width: 1020px;
+  min-height: 600px;
   display: grid;
-  grid-template-columns: 52% 48%;
+  grid-template-columns: 50% 50%;
   border-radius: 28px;
   overflow: hidden;
   box-shadow:
-    0 50px 120px rgba(0,0,0,.6),
-    0 0 0 1px rgba(74,124,255,.15),
-    inset 0 1px 0 rgba(255,255,255,.06);
+    0 60px 140px rgba(0,0,0,.75),
+    0 0 0 1px rgba(74,124,255,.18),
+    0 0 80px rgba(45,76,173,.12),
+    inset 0 1px 0 rgba(255,255,255,.07);
   animation: cardIn .7s cubic-bezier(.34,1.4,.64,1) both;
 }
 @keyframes cardIn {
@@ -67,27 +89,20 @@ body {
   to   { opacity:1; transform:scale(1)  translateY(0); }
 }
 
-/* ══════════════════════════════════
-   LEFT — FORM PANEL (light)
-══════════════════════════════════ */
+/* ══ LEFT — FORM PANEL ══ */
 .form-panel {
   background: var(--card-bg);
-  padding: 52px 48px;
+  padding: 50px 46px;
   display: flex; flex-direction: column; justify-content: center;
   position: relative; z-index: 2;
 }
-
-/* subtle texture */
 .form-panel::before {
   content: '';
   position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse 80% 60% at 20% 0%, rgba(74,124,255,.04) 0%, transparent 60%);
+  background: radial-gradient(ellipse 80% 60% at 20% 0%, rgba(74,124,255,.05) 0%, transparent 60%);
 }
 
-.brand {
-  display: flex; align-items: center; gap: 10px;
-  margin-bottom: 36px;
-}
+.brand { display: flex; align-items: center; gap: 10px; margin-bottom: 34px; }
 .brand-icon {
   width: 36px; height: 36px;
   background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
@@ -96,75 +111,37 @@ body {
   box-shadow: 0 4px 14px rgba(74,124,255,.4);
 }
 .brand-icon svg { width: 18px; height: 18px; }
-.brand-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 1rem; font-weight: 700;
-  color: #1a1f36;
-}
+.brand-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: #1a1f36; }
 .brand-name span { color: var(--accent); }
 
-.form-title {
-  font-family: 'Nunito', sans-serif;
-  font-size: 1.7rem; font-weight: 800;
-  color: #0d1120; letter-spacing: -.03em;
-  margin-bottom: 6px;
-}
-.form-sub {
-  font-size: .83rem; color: #8896b3; font-weight: 500;
-  margin-bottom: 28px; line-height: 1.5;
-}
+.form-title { font-family: 'Nunito', sans-serif; font-size: 1.7rem; font-weight: 800; color: #0d1120; letter-spacing: -.03em; margin-bottom: 6px; }
+.form-sub { font-size: .83rem; color: #8896b3; font-weight: 500; margin-bottom: 26px; line-height: 1.5; }
 
-/* name row */
-.name-row {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-  margin-bottom: 14px;
-}
+.name-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
 .fg { margin-bottom: 14px; }
 .fg:last-of-type { margin-bottom: 0; }
 
-label {
-  display: block; font-size: .72rem; font-weight: 700;
-  color: #5a6580; margin-bottom: 5px;
-  letter-spacing: .06em; text-transform: uppercase;
-}
+label { display: block; font-size: .72rem; font-weight: 700; color: #5a6580; margin-bottom: 5px; letter-spacing: .06em; text-transform: uppercase; }
 
 input[type=text], input[type=email], input[type=password] {
   width: 100%; padding: 11px 14px;
   border: 1.5px solid #e4e8f2;
   border-radius: 10px;
-  font-family: 'Nunito', sans-serif;
-  font-size: .87rem; color: #0d1120;
+  font-family: 'Nunito', sans-serif; font-size: .87rem; color: #0d1120;
   background: #f8faff; outline: none;
   transition: border-color .2s, box-shadow .2s, background .2s;
 }
-input:focus {
-  border-color: var(--accent);
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(74,124,255,.12);
-}
+input:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 3px rgba(74,124,255,.12); }
 input::placeholder { color: #b8c0d4; font-weight: 400; }
 
 .pw-wrap { position: relative; }
 .pw-wrap input { padding-right: 42px; }
-.pw-eye {
-  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-  background: none; border: none; cursor: pointer;
-  font-size: .9rem; color: #b8c0d4; padding: 0; transition: color .2s;
-}
+.pw-eye { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: .9rem; color: #b8c0d4; padding: 0; transition: color .2s; }
 .pw-eye:hover { color: var(--accent); }
 
-.terms-row {
-  display: flex; align-items: flex-start; gap: 8px;
-  margin: 14px 0 16px; font-size: .74rem; color: #8896b3; line-height: 1.5;
-}
-.terms-row input[type=checkbox] {
-  width: 14px; height: 14px; accent-color: var(--accent);
-  cursor: pointer; flex-shrink: 0; margin-top: 2px;
-}
-.terms-row label {
-  text-transform: none; letter-spacing: 0; font-weight: 500;
-  color: #8896b3; font-size: .74rem; margin-bottom: 0;
-}
+.terms-row { display: flex; align-items: flex-start; gap: 8px; margin: 14px 0 16px; font-size: .74rem; color: #8896b3; line-height: 1.5; }
+.terms-row input[type=checkbox] { width: 14px; height: 14px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; margin-top: 2px; }
+.terms-row label { text-transform: none; letter-spacing: 0; font-weight: 500; color: #8896b3; font-size: .74rem; margin-bottom: 0; }
 .terms-row a { color: var(--accent); font-weight: 700; text-decoration: none; }
 .terms-row a:hover { text-decoration: underline; }
 
@@ -172,21 +149,17 @@ input::placeholder { color: #b8c0d4; font-weight: 400; }
   width: 100%; padding: 13px;
   background: linear-gradient(135deg, var(--accent) 0%, #3a5fd8 100%);
   color: white; border: none; border-radius: 11px;
-  font-family: 'Nunito', sans-serif;
-  font-size: .92rem; font-weight: 800; letter-spacing: .04em;
+  font-family: 'Nunito', sans-serif; font-size: .92rem; font-weight: 800; letter-spacing: .04em;
   cursor: pointer; text-transform: uppercase;
   box-shadow: 0 6px 22px rgba(74,124,255,.45);
   transition: opacity .2s, transform .15s, box-shadow .2s;
   margin-bottom: 14px;
 }
-.btn-main:hover { opacity: .92; transform: translateY(-1px); box-shadow: 0 10px 30px rgba(74,124,255,.5); }
-.btn-main:active { transform: translateY(0); }
+.btn-main:hover { opacity:.92; transform:translateY(-1px); box-shadow:0 10px 30px rgba(74,124,255,.5); }
+.btn-main:active { transform:translateY(0); }
 
-.divider {
-  display: flex; align-items: center; gap: 10px;
-  margin-bottom: 13px; color: #c0c8d8; font-size: .71rem; font-weight: 600;
-}
-.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #e4e8f2; }
+.divider { display: flex; align-items: center; gap: 10px; margin-bottom: 13px; color: #c0c8d8; font-size: .71rem; font-weight: 600; }
+.divider::before, .divider::after { content:''; flex:1; height:1px; background:#e4e8f2; }
 
 .btn-google {
   width: 100%; padding: 11px; background: #fff; color: #4a5568;
@@ -201,117 +174,156 @@ input::placeholder { color: #b8c0d4; font-weight: 400; }
 .signin-row a { color: var(--accent); font-weight: 700; text-decoration: none; }
 .signin-row a:hover { text-decoration: underline; }
 
-/* ══════════════════════════════════
-   RIGHT — 3D WORLD PANEL
-══════════════════════════════════ */
+/* ══ RIGHT — WORLD PANEL ══ */
 .world-panel {
   position: relative; overflow: hidden;
-  background: linear-gradient(155deg, #0f1935 0%, #111d45 35%, #0d1628 65%, #0a1020 100%);
+  background: transparent;
 }
 
-/* Large glowing circle — like reference */
+/* Rich layered world bg */
+.world-panel::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 100% 120% at 55% 50%, rgba(20,38,110,.98) 0%, rgba(12,22,65,.95) 40%, rgba(6,10,25,1) 75%),
+    linear-gradient(180deg, #08102a 0%, #050910 100%);
+}
+
+/* Large ethereal orb */
 .orb-ring {
   position: absolute;
-  width: 110%;
-  padding-bottom: 110%;
+  width: 120%; padding-bottom: 120%;
   border-radius: 50%;
   top: 50%; left: 50%;
   transform: translate(-52%, -50%);
   background: radial-gradient(ellipse at 40% 35%,
-    rgba(74,124,255,.22) 0%,
-    rgba(45,76,173,.18) 30%,
-    rgba(15,25,60,.4) 60%,
-    transparent 72%
+    rgba(74,124,255,.28) 0%,
+    rgba(45,76,173,.2) 28%,
+    rgba(15,25,60,.35) 55%,
+    transparent 68%
   );
   pointer-events: none; z-index: 1;
+  animation: orbBreath 8s ease-in-out infinite;
 }
+@keyframes orbBreath { 0%,100%{transform:translate(-52%,-50%) scale(1)} 50%{transform:translate(-52%,-50%) scale(1.05)} }
 .orb-ring::before {
   content: '';
-  position: absolute; inset: 8%;
+  position: absolute; inset: 7%;
   border-radius: 50%;
-  border: 1px solid rgba(74,124,255,.15);
-  box-shadow: inset 0 0 60px rgba(74,124,255,.08);
+  border: 1px solid rgba(74,124,255,.18);
+  box-shadow:
+    inset 0 0 60px rgba(74,124,255,.1),
+    0 0 40px rgba(74,124,255,.08);
 }
 .orb-ring::after {
   content: '';
-  position: absolute; inset: 20%;
+  position: absolute; inset: 22%;
   border-radius: 50%;
-  border: 1px solid rgba(74,124,255,.08);
+  border: 1px solid rgba(74,124,255,.1);
+  box-shadow: inset 0 0 30px rgba(56,200,216,.06);
 }
 
-/* star particles */
+/* inner glow spot */
+.orb-inner {
+  position: absolute; width: 40%; padding-bottom: 40%;
+  border-radius: 50%;
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse at center,
+    rgba(74,124,255,.18) 0%, rgba(45,76,173,.1) 40%, transparent 70%
+  );
+  z-index: 1; pointer-events: none;
+  animation: orbBreath 6s ease-in-out infinite 2s;
+}
+
+/* Starfield — many more stars */
 .star {
   position: absolute; border-radius: 50%;
-  background: white; pointer-events: none; z-index: 1;
-  animation: twinkle 3s ease-in-out infinite;
+  background: white; pointer-events: none; z-index: 2;
+  animation: twinkle var(--td,3s) ease-in-out infinite var(--dl,0s);
 }
-@keyframes twinkle { 0%,100%{opacity:.2;transform:scale(.8)} 50%{opacity:.9;transform:scale(1.2)} }
+@keyframes twinkle { 0%,100%{opacity:.15;transform:scale(.7)} 50%{opacity:1;transform:scale(1.3)} }
+
+/* Shooting star */
+.shoot {
+  position: absolute; pointer-events: none; z-index: 2;
+  width: 60px; height: 1px;
+  background: linear-gradient(90deg, rgba(255,255,255,.0), rgba(255,255,255,.9), rgba(255,255,255,.0));
+  border-radius: 1px;
+  animation: shoot var(--sd,8s) ease-in-out infinite var(--sdl,0s);
+  opacity: 0;
+}
+@keyframes shoot {
+  0%   { opacity:0; transform:translateX(0) translateY(0) rotate(-25deg); }
+  2%   { opacity:1; }
+  8%   { opacity:0; transform:translateX(120px) translateY(60px) rotate(-25deg); }
+  100% { opacity:0; transform:translateX(120px) translateY(60px) rotate(-25deg); }
+}
 
 /* world text */
 .world-title {
-  position: absolute; top: 10%; left: 50%;
+  position: absolute; top: 9%; left: 50%;
   transform: translateX(-50%);
   z-index: 8; text-align: center;
   pointer-events: none;
 }
 .world-title h2 {
   font-family: 'Playfair Display', serif;
-  font-style: italic; font-size: 1.25rem; font-weight: 600;
+  font-style: italic; font-size: 1.2rem; font-weight: 600;
   color: rgba(255,255,255,.9);
-  text-shadow: 0 0 30px rgba(74,124,255,.6);
+  text-shadow: 0 0 30px rgba(74,124,255,.7), 0 0 60px rgba(74,124,255,.3);
   white-space: nowrap;
 }
 .world-title p {
-  font-size: .68rem; font-weight: 700; letter-spacing: .12em;
-  color: rgba(120,160,255,.7); text-transform: uppercase; margin-top: 4px;
+  font-size: .62rem; font-weight: 700; letter-spacing: .14em;
+  color: rgba(120,160,255,.65); text-transform: uppercase; margin-top: 5px;
 }
 
-/* ── FLOATING OBJECTS LAYER ── */
+/* ── FLOATING OBJECTS ── */
 #floatLayer {
   position: absolute; inset: 0; z-index: 5;
   pointer-events: none;
 }
 
-/* Each floating object */
 .fobj {
   position: absolute;
   pointer-events: none;
   will-change: transform;
-  /* individual positions set inline */
 }
-.fobj svg, .fobj .obj-inner {
-  filter: drop-shadow(0 8px 20px rgba(0,0,0,.5));
-  animation: objFloat var(--dur, 6s) ease-in-out infinite var(--delay, 0s);
-}
-@keyframes objFloat {
-  0%,100% { transform: translateY(0px) rotate(var(--rot0, -5deg)); }
-  50%      { transform: translateY(var(--ty, -14px)) rotate(var(--rot1, 5deg)); }
+.fobj svg {
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,.6));
 }
 
-/* glow halos around objects */
+/* glow halos */
 .fobj::after {
   content: '';
-  position: absolute; inset: -8px;
+  position: absolute; inset: -10px;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--halo, rgba(74,124,255,.18)) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--halo, rgba(74,124,255,.15)) 0%, transparent 70%);
   pointer-events: none;
-  animation: haloP var(--dur, 6s) ease-in-out infinite var(--delay, 0s);
+  animation: haloP var(--dur,6s) ease-in-out infinite var(--delay,0s);
 }
 @keyframes haloP {
-  0%,100% { opacity: .6; transform: scale(1); }
-  50%      { opacity: 1;  transform: scale(1.15); }
+  0%,100% { opacity:.5; transform:scale(1); }
+  50%     { opacity:1;  transform:scale(1.2); }
 }
 
-/* ── OBJECT SVG STYLES ── */
-/* Book */
-.book-cover {
-  rx: 4px;
-}
-
-/* connection lines between objects */
+/* Connection lines */
 .conn-line {
-  position: absolute; pointer-events: none; z-index: 4;
-  opacity: .18;
+  position: absolute; pointer-events: none; z-index: 4; opacity: .15;
+}
+
+/* dust particles */
+.dust {
+  position: absolute; border-radius: 50%;
+  pointer-events: none; z-index: 3;
+  animation: dustFloat var(--dd,20s) ease-in-out infinite var(--ddl,0s);
+}
+@keyframes dustFloat {
+  0%   { transform:translate(0,0) scale(1); opacity:.4; }
+  25%  { transform:translate(var(--dx1,8px), var(--dy1,-12px)) scale(1.2); opacity:.7; }
+  50%  { transform:translate(var(--dx2,-6px), var(--dy2,-20px)) scale(.9); opacity:.5; }
+  75%  { transform:translate(var(--dx3,12px), var(--dy3,-8px)) scale(1.1); opacity:.6; }
+  100% { transform:translate(0,0) scale(1); opacity:.4; }
 }
 
 /* toast */
@@ -330,7 +342,7 @@ input::placeholder { color: #b8c0d4; font-weight: 400; }
 
 @media(max-width:700px) {
   .card { grid-template-columns: 1fr; }
-  .world-panel { min-height: 260px; }
+  .world-panel { min-height: 280px; }
   .form-panel { padding: 30px 24px; }
   .name-row { grid-template-columns: 1fr; }
 }
@@ -338,9 +350,14 @@ input::placeholder { color: #b8c0d4; font-weight: 400; }
 </head>
 <body>
 
-<div class="ambient am1"></div>
-<div class="ambient am2"></div>
-<div class="ambient am3"></div>
+<!-- Rich background layers -->
+<div class="bg-base"></div>
+<div class="nebula nb1"></div>
+<div class="nebula nb2"></div>
+<div class="nebula nb3"></div>
+<div class="nebula nb4"></div>
+<div class="nebula nb5"></div>
+<div class="grain"></div>
 
 <div class="card">
 
@@ -400,20 +417,47 @@ input::placeholder { color: #b8c0d4; font-weight: 400; }
     <div class="signin-row">Already have an account? <a href="#">Sign in</a></div>
   </div>
 
-  <!-- ══ RIGHT: 3D WORLD ══ -->
+  <!-- ══ RIGHT: WORLD PANEL ══ -->
   <div class="world-panel" id="worldPanel">
     <div class="orb-ring"></div>
+    <div class="orb-inner"></div>
 
-    <!-- stars -->
-    <div class="star" style="width:2px;height:2px;top:12%;left:18%;animation-delay:.5s"></div>
-    <div class="star" style="width:3px;height:3px;top:22%;left:72%;animation-delay:1.2s"></div>
-    <div class="star" style="width:2px;height:2px;top:65%;left:15%;animation-delay:2s"></div>
-    <div class="star" style="width:2px;height:2px;top:78%;left:80%;animation-delay:.8s"></div>
-    <div class="star" style="width:3px;height:3px;top:45%;left:88%;animation-delay:1.8s"></div>
-    <div class="star" style="width:2px;height:2px;top:8%;left:55%;animation-delay:3s"></div>
-    <div class="star" style="width:2px;height:2px;top:90%;left:40%;animation-delay:1.5s"></div>
+    <!-- Starfield — many more stars for richness -->
+    <div class="star" style="--td:2.8s;--dl:.3s;width:1.5px;height:1.5px;top:5%;left:10%"></div>
+    <div class="star" style="--td:3.5s;--dl:1s;width:2px;height:2px;top:8%;left:25%"></div>
+    <div class="star" style="--td:2.2s;--dl:1.8s;width:1px;height:1px;top:12%;left:42%"></div>
+    <div class="star" style="--td:4s;--dl:.6s;width:3px;height:3px;top:6%;left:62%"></div>
+    <div class="star" style="--td:2.6s;--dl:2.2s;width:1.5px;height:1.5px;top:15%;left:78%"></div>
+    <div class="star" style="--td:3.1s;--dl:0s;width:2px;height:2px;top:22%;left:88%"></div>
+    <div class="star" style="--td:2.9s;--dl:1.4s;width:1px;height:1px;top:30%;left:5%"></div>
+    <div class="star" style="--td:3.8s;--dl:.9s;width:2.5px;height:2.5px;top:38%;left:92%"></div>
+    <div class="star" style="--td:2.4s;--dl:2.6s;width:1.5px;height:1.5px;top:55%;left:82%"></div>
+    <div class="star" style="--td:3.3s;--dl:.4s;width:1px;height:1px;top:62%;left:14%"></div>
+    <div class="star" style="--td:2.7s;--dl:1.7s;width:2px;height:2px;top:70%;left:35%"></div>
+    <div class="star" style="--td:3.6s;--dl:3s;width:1.5px;height:1.5px;top:78%;left:72%"></div>
+    <div class="star" style="--td:2s;--dl:.7s;width:1px;height:1px;top:85%;left:55%"></div>
+    <div class="star" style="--td:4.2s;--dl:1.1s;width:2px;height:2px;top:90%;left:20%"></div>
+    <div class="star" style="--td:2.5s;--dl:2.9s;width:1px;height:1px;top:94%;left:85%"></div>
+    <div class="star" style="--td:3s;--dl:.2s;width:1.5px;height:1.5px;top:48%;left:50%"></div>
+    <div class="star" style="--td:3.9s;--dl:1.5s;width:1px;height:1px;top:3%;left:48%"></div>
+    <div class="star" style="--td:2.3s;--dl:3.2s;width:2px;height:2px;top:20%;left:18%"></div>
+    <div class="star" style="--td:3.4s;--dl:.8s;width:1px;height:1px;top:44%;left:70%"></div>
+    <div class="star" style="--td:2.1s;--dl:2s;width:1.5px;height:1.5px;top:67%;left:96%"></div>
 
-    <!-- world label -->
+    <!-- Shooting stars -->
+    <div class="shoot" style="--sd:11s;--sdl:2s;top:18%;left:20%"></div>
+    <div class="shoot" style="--sd:14s;--sdl:7s;top:35%;left:50%"></div>
+    <div class="shoot" style="--sd:9s;--sdl:4s;top:8%;left:55%"></div>
+
+    <!-- Dust particles -->
+    <div class="dust" style="--dd:18s;--ddl:0s;--dx1:10px;--dy1:-8px;--dx2:-5px;--dy2:-15px;--dx3:8px;--dy3:-5px;width:3px;height:3px;background:rgba(74,124,255,.5);border-radius:50%;top:35%;left:30%"></div>
+    <div class="dust" style="--dd:22s;--ddl:3s;--dx1:-8px;--dy1:-12px;--dx2:6px;--dy2:-18px;--dx3:-10px;--dy3:-6px;width:2px;height:2px;background:rgba(56,200,216,.4);border-radius:50%;top:60%;left:65%"></div>
+    <div class="dust" style="--dd:15s;--ddl:6s;--dx1:12px;--dy1:-10px;--dx2:-8px;--dy2:-20px;--dx3:15px;--dy3:-8px;width:2.5px;height:2.5px;background:rgba(245,200,66,.4);border-radius:50%;top:75%;left:45%"></div>
+    <div class="dust" style="--dd:19s;--ddl:9s;--dx1:-6px;--dy1:-8px;--dx2:10px;--dy2:-14px;--dx3:-12px;--dy3:-4px;width:2px;height:2px;background:rgba(255,96,144,.35);border-radius:50%;top:25%;left:72%"></div>
+    <div class="dust" style="--dd:25s;--ddl:1s;--dx1:8px;--dy1:-6px;--dx2:-4px;--dy2:-12px;--dx3:6px;--dy3:-3px;width:1.5px;height:1.5px;background:rgba(150,180,255,.5);border-radius:50%;top:50%;left:20%"></div>
+    <div class="dust" style="--dd:17s;--ddl:5s;--dx1:-10px;--dy1:-5px;--dx2:8px;--dy2:-10px;--dx3:-6px;--dy3:-2px;width:2px;height:2px;background:rgba(74,124,255,.4);border-radius:50%;top:82%;left:78%"></div>
+
+    <!-- World label -->
     <div class="world-title">
       <h2>"A sanctuary of words"</h2>
       <p>House of Verses · Literary World</p>
@@ -421,129 +465,110 @@ input::placeholder { color: #b8c0d4; font-weight: 400; }
 
     <!-- SVG connection lines -->
     <svg class="conn-line" style="inset:0;width:100%;height:100%;position:absolute;" id="connSvg">
-      <line id="cl1" stroke="rgba(74,124,255,.4)" stroke-width="1" stroke-dasharray="4 4"/>
-      <line id="cl2" stroke="rgba(74,124,255,.4)" stroke-width="1" stroke-dasharray="4 4"/>
-      <line id="cl3" stroke="rgba(74,124,255,.4)" stroke-width="1" stroke-dasharray="4 4"/>
-      <line id="cl4" stroke="rgba(56,200,216,.35)" stroke-width="1" stroke-dasharray="4 4"/>
-      <line id="cl5" stroke="rgba(123,94,167,.4)" stroke-width="1" stroke-dasharray="4 4"/>
+      <line id="cl1" stroke="rgba(74,124,255,.5)" stroke-width="1" stroke-dasharray="4 5"/>
+      <line id="cl2" stroke="rgba(74,124,255,.4)" stroke-width="1" stroke-dasharray="3 6"/>
+      <line id="cl3" stroke="rgba(56,200,216,.35)" stroke-width="1" stroke-dasharray="4 5"/>
+      <line id="cl4" stroke="rgba(123,94,167,.4)" stroke-width="1" stroke-dasharray="3 6"/>
+      <line id="cl5" stroke="rgba(245,200,66,.3)" stroke-width="1" stroke-dasharray="4 5"/>
+      <line id="cl6" stroke="rgba(255,96,144,.3)" stroke-width="1" stroke-dasharray="3 6"/>
+      <line id="cl7" stroke="rgba(74,124,255,.3)" stroke-width="1" stroke-dasharray="5 4"/>
     </svg>
 
-    <!-- FLOATING OBJECTS -->
+    <!-- ══ FLOATING OBJECTS ══ -->
     <div id="floatLayer">
 
-      <!-- 1. Open Book (center-ish, large) -->
+      <!-- 0. Open Book — CENTER, breathes -->
       <div class="fobj" id="obj0"
-           style="--dur:5.5s;--delay:0s;--ty:-16px;--rot0:-4deg;--rot1:4deg;--halo:rgba(74,124,255,.25);
-                  left:50%;top:38%;transform:translate(-50%,-50%)">
-        <svg width="90" height="72" viewBox="0 0 90 72" fill="none">
-          <!-- left page -->
-          <path d="M45 10 Q25 8 8 14 L8 62 Q26 56 45 60 Z" fill="#1e2d6b" stroke="rgba(74,124,255,.5)" stroke-width="1"/>
-          <path d="M45 10 Q25 8 8 14 L8 62 Q26 56 45 60 Z" fill="url(#bookL)" opacity=".9"/>
-          <!-- right page -->
-          <path d="M45 10 Q65 8 82 14 L82 62 Q64 56 45 60 Z" fill="#1a2560" stroke="rgba(74,124,255,.5)" stroke-width="1"/>
-          <path d="M45 10 Q65 8 82 14 L82 62 Q64 56 45 60 Z" fill="url(#bookR)" opacity=".9"/>
-          <!-- spine -->
-          <line x1="45" y1="10" x2="45" y2="60" stroke="rgba(74,124,255,.6)" stroke-width="1.5"/>
-          <!-- text lines left -->
-          <line x1="15" y1="25" x2="40" y2="23" stroke="rgba(120,160,255,.35)" stroke-width="1"/>
-          <line x1="15" y1="32" x2="40" y2="30" stroke="rgba(120,160,255,.35)" stroke-width="1"/>
-          <line x1="15" y1="39" x2="38" y2="37" stroke="rgba(120,160,255,.25)" stroke-width="1"/>
-          <line x1="15" y1="46" x2="40" y2="44" stroke="rgba(120,160,255,.25)" stroke-width="1"/>
-          <!-- text lines right -->
-          <line x1="50" y1="25" x2="74" y2="23" stroke="rgba(120,160,255,.35)" stroke-width="1"/>
-          <line x1="50" y1="32" x2="74" y2="30" stroke="rgba(120,160,255,.35)" stroke-width="1"/>
-          <line x1="50" y1="39" x2="72" y2="37" stroke="rgba(120,160,255,.25)" stroke-width="1"/>
-          <line x1="50" y1="46" x2="74" y2="44" stroke="rgba(120,160,255,.25)" stroke-width="1"/>
-          <!-- glow on spine -->
-          <line x1="45" y1="10" x2="45" y2="60" stroke="rgba(74,124,255,.8)" stroke-width=".5" filter="url(#gfx)"/>
+           style="--halo:rgba(74,124,255,.3);left:50%;top:42%;transform:translate(-50%,-50%)">
+        <svg width="100" height="78" viewBox="0 0 100 78" fill="none">
           <defs>
             <linearGradient id="bookL" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#2a3f8f"/><stop offset="100%" stop-color="#1a2560"/>
+              <stop offset="0%" stop-color="#2a3f9f"/><stop offset="100%" stop-color="#1a2568"/>
             </linearGradient>
             <linearGradient id="bookR" x1="1" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#243585"/><stop offset="100%" stop-color="#151d50"/>
+              <stop offset="0%" stop-color="#243595"/><stop offset="100%" stop-color="#151d58"/>
             </linearGradient>
+            <filter id="spineGlow"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
           </defs>
+          <!-- left page -->
+          <path d="M50 8 Q28 6 8 13 L8 68 Q28 62 50 66 Z" fill="#1e2d6b" stroke="rgba(74,124,255,.4)" stroke-width="1"/>
+          <path d="M50 8 Q28 6 8 13 L8 68 Q28 62 50 66 Z" fill="url(#bookL)" opacity=".9"/>
+          <!-- right page -->
+          <path d="M50 8 Q72 6 92 13 L92 68 Q72 62 50 66 Z" fill="#1a2560" stroke="rgba(74,124,255,.4)" stroke-width="1"/>
+          <path d="M50 8 Q72 6 92 13 L92 68 Q72 62 50 66 Z" fill="url(#bookR)" opacity=".9"/>
+          <!-- spine glow -->
+          <line x1="50" y1="8" x2="50" y2="66" stroke="rgba(74,124,255,.9)" stroke-width="1.5" filter="url(#spineGlow)"/>
+          <!-- text lines left -->
+          <line x1="16" y1="24" x2="44" y2="22" stroke="rgba(120,160,255,.4)" stroke-width="1"/>
+          <line x1="16" y1="32" x2="44" y2="30" stroke="rgba(120,160,255,.35)" stroke-width="1"/>
+          <line x1="16" y1="40" x2="42" y2="38" stroke="rgba(120,160,255,.25)" stroke-width="1"/>
+          <line x1="16" y1="48" x2="44" y2="46" stroke="rgba(120,160,255,.2)" stroke-width="1"/>
+          <line x1="16" y1="56" x2="40" y2="54" stroke="rgba(120,160,255,.15)" stroke-width="1"/>
+          <!-- text lines right -->
+          <line x1="56" y1="24" x2="84" y2="22" stroke="rgba(120,160,255,.4)" stroke-width="1"/>
+          <line x1="56" y1="32" x2="84" y2="30" stroke="rgba(120,160,255,.35)" stroke-width="1"/>
+          <line x1="56" y1="40" x2="82" y2="38" stroke="rgba(120,160,255,.25)" stroke-width="1"/>
+          <line x1="56" y1="48" x2="84" y2="46" stroke="rgba(120,160,255,.2)" stroke-width="1"/>
+          <line x1="56" y1="56" x2="80" y2="54" stroke="rgba(120,160,255,.15)" stroke-width="1"/>
+          <!-- page corner fold -->
+          <path d="M44 62 L50 66 L44 66 Z" fill="rgba(255,255,255,.1)"/>
         </svg>
       </div>
 
-      <!-- 2. Quill Pen (top right) -->
+      <!-- 1. Large Quill Pen — top right, follows cursor eagerly -->
       <div class="fobj" id="obj1"
-           style="--dur:7s;--delay:-.8s;--ty:-18px;--rot0:-12deg;--rot1:8deg;--halo:rgba(56,200,216,.2);
-                  right:12%;top:18%">
-        <svg width="54" height="80" viewBox="0 0 54 80" fill="none">
-          <!-- feather shape -->
-          <path d="M27 4 C44 10 52 28 48 48 C44 58 34 64 27 76 C20 64 10 58 6 48 C2 28 10 10 27 4Z"
-                fill="url(#quillG)" opacity=".9"/>
-          <!-- central spine -->
-          <line x1="27" y1="4" x2="27" y2="76" stroke="rgba(200,220,255,.6)" stroke-width="1"/>
-          <!-- barbs left -->
-          <path d="M27 20 C20 22 12 24 8 28" stroke="rgba(200,220,255,.3)" stroke-width=".8" fill="none"/>
-          <path d="M27 30 C19 33 11 36 7 40" stroke="rgba(200,220,255,.3)" stroke-width=".8" fill="none"/>
-          <path d="M27 40 C20 43 13 46 8 50" stroke="rgba(200,220,255,.25)" stroke-width=".8" fill="none"/>
-          <!-- barbs right -->
-          <path d="M27 20 C34 22 42 24 46 28" stroke="rgba(200,220,255,.3)" stroke-width=".8" fill="none"/>
-          <path d="M27 30 C35 33 43 36 47 40" stroke="rgba(200,220,255,.3)" stroke-width=".8" fill="none"/>
-          <path d="M27 40 C34 43 41 46 46 50" stroke="rgba(200,220,255,.25)" stroke-width=".8" fill="none"/>
-          <!-- nib tip -->
-          <path d="M24 70 L27 76 L30 70 L27 65Z" fill="rgba(56,200,216,.8)"/>
+           style="--halo:rgba(56,200,216,.25);right:10%;top:14%">
+        <svg width="58" height="90" viewBox="0 0 58 90" fill="none">
           <defs>
             <linearGradient id="quillG" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="rgba(200,220,255,.7)"/>
-              <stop offset="60%" stop-color="rgba(120,160,255,.5)"/>
-              <stop offset="100%" stop-color="rgba(56,200,216,.6)"/>
+              <stop offset="0%" stop-color="rgba(210,230,255,.85)"/>
+              <stop offset="55%" stop-color="rgba(130,170,255,.6)"/>
+              <stop offset="100%" stop-color="rgba(56,200,216,.7)"/>
             </linearGradient>
           </defs>
+          <path d="M29 3 C48 10 57 30 53 52 C49 64 38 72 29 86 C20 72 9 64 5 52 C1 30 10 10 29 3Z" fill="url(#quillG)" opacity=".9"/>
+          <line x1="29" y1="3" x2="29" y2="86" stroke="rgba(200,225,255,.7)" stroke-width="1.2"/>
+          <path d="M29 18 C21 21 13 24 8 29" stroke="rgba(200,220,255,.35)" stroke-width=".8" fill="none"/>
+          <path d="M29 28 C20 32 12 36 7 41" stroke="rgba(200,220,255,.3)" stroke-width=".8" fill="none"/>
+          <path d="M29 38 C21 42 14 46 9 51" stroke="rgba(200,220,255,.25)" stroke-width=".8" fill="none"/>
+          <path d="M29 48 C22 52 16 56 11 60" stroke="rgba(200,220,255,.18)" stroke-width=".8" fill="none"/>
+          <path d="M29 18 C37 21 45 24 50 29" stroke="rgba(200,220,255,.35)" stroke-width=".8" fill="none"/>
+          <path d="M29 28 C38 32 46 36 51 41" stroke="rgba(200,220,255,.3)" stroke-width=".8" fill="none"/>
+          <path d="M29 38 C37 42 44 46 49 51" stroke="rgba(200,220,255,.25)" stroke-width=".8" fill="none"/>
+          <path d="M29 48 C36 52 42 56 47 60" stroke="rgba(200,220,255,.18)" stroke-width=".8" fill="none"/>
+          <!-- nib tip -->
+          <path d="M26 78 L29 86 L32 78 L29 73Z" fill="rgba(56,200,216,.85)"/>
+          <line x1="29" y1="73" x2="29" y2="86" stroke="rgba(56,200,216,.5)" stroke-width=".5"/>
         </svg>
       </div>
 
-      <!-- 3. Closed Book (left side) -->
+      <!-- 2. Closed Book — left mid, drifts autonomously -->
       <div class="fobj" id="obj2"
-           style="--dur:6.5s;--delay:-1.5s;--ty:-12px;--rot0:8deg;--rot1:-6deg;--halo:rgba(123,94,167,.22);
-                  left:8%;top:30%">
-        <svg width="52" height="66" viewBox="0 0 52 66" fill="none">
-          <rect x="8" y="4" width="36" height="58" rx="3" fill="#7b5ea7" opacity=".85"/>
-          <rect x="8" y="4" width="36" height="58" rx="3" fill="url(#bkG)"/>
-          <rect x="6" y="4" width="6" height="58" rx="2" fill="#5a3f8a"/>
-          <!-- pages side -->
-          <rect x="44" y="6" width="3" height="54" rx="1" fill="rgba(200,210,255,.15)"/>
-          <!-- title lines -->
-          <rect x="16" y="20" width="20" height="2" rx="1" fill="rgba(255,255,255,.4)"/>
-          <rect x="18" y="26" width="16" height="1.5" rx="1" fill="rgba(255,255,255,.25)"/>
-          <rect x="20" y="31" width="12" height="1.5" rx="1" fill="rgba(255,255,255,.2)"/>
-          <!-- decorative line at top -->
-          <rect x="14" y="14" width="24" height="1" rx=".5" fill="rgba(200,180,255,.5)"/>
-          <rect x="14" y="50" width="24" height="1" rx=".5" fill="rgba(200,180,255,.5)"/>
+           style="--halo:rgba(123,94,167,.25);left:7%;top:32%">
+        <svg width="54" height="70" viewBox="0 0 54 70" fill="none">
           <defs>
             <linearGradient id="bkG" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#9b7ec7"/><stop offset="100%" stop-color="#5a3f8a"/>
+              <stop offset="0%" stop-color="#a07ed4"/><stop offset="100%" stop-color="#5a3f8a"/>
             </linearGradient>
           </defs>
+          <rect x="8" y="4" width="38" height="62" rx="3" fill="#7b5ea7" opacity=".85"/>
+          <rect x="8" y="4" width="38" height="62" rx="3" fill="url(#bkG)"/>
+          <rect x="6" y="4" width="6" height="62" rx="2" fill="#5a3f8a"/>
+          <rect x="46" y="6" width="3" height="58" rx="1" fill="rgba(200,210,255,.15)"/>
+          <rect x="16" y="22" width="22" height="2" rx="1" fill="rgba(255,255,255,.45)"/>
+          <rect x="18" y="28" width="18" height="1.5" rx="1" fill="rgba(255,255,255,.3)"/>
+          <rect x="20" y="33" width="14" height="1.5" rx="1" fill="rgba(255,255,255,.22)"/>
+          <rect x="14" y="15" width="26" height="1" rx=".5" fill="rgba(200,180,255,.6)"/>
+          <rect x="14" y="55" width="26" height="1" rx=".5" fill="rgba(200,180,255,.6)"/>
+          <!-- small gem -->
+          <path d="M27 42 L30 46 L27 50 L24 46 Z" fill="rgba(200,160,255,.5)" stroke="rgba(255,255,255,.2)" stroke-width=".5"/>
         </svg>
       </div>
 
-      <!-- 4. Scroll / Paper (bottom right) -->
+      <!-- 3. Scroll — bottom right, lazy cursor follower -->
       <div class="fobj" id="obj3"
-           style="--dur:8s;--delay:-2.2s;--ty:-10px;--rot0:-6deg;--rot1:6deg;--halo:rgba(255,200,80,.15);
-                  right:8%;bottom:22%">
-        <svg width="56" height="70" viewBox="0 0 56 70" fill="none">
-          <!-- scroll body -->
-          <rect x="8" y="12" width="40" height="48" rx="2" fill="#1a2a5e"/>
-          <rect x="8" y="12" width="40" height="48" rx="2" fill="url(#scrG)" opacity=".9"/>
-          <!-- top curl -->
-          <ellipse cx="28" cy="12" rx="20" ry="6" fill="#243070"/>
-          <ellipse cx="28" cy="12" rx="20" ry="6" fill="url(#curlG)" opacity=".8"/>
-          <!-- bottom curl -->
-          <ellipse cx="28" cy="60" rx="20" ry="6" fill="#1a2560"/>
-          <!-- text lines -->
-          <line x1="16" y1="24" x2="40" y2="24" stroke="rgba(120,160,255,.4)" stroke-width="1"/>
-          <line x1="16" y1="30" x2="38" y2="30" stroke="rgba(120,160,255,.35)" stroke-width="1"/>
-          <line x1="16" y1="36" x2="40" y2="36" stroke="rgba(120,160,255,.3)" stroke-width="1"/>
-          <line x1="16" y1="42" x2="36" y2="42" stroke="rgba(120,160,255,.25)" stroke-width="1"/>
-          <line x1="16" y1="48" x2="40" y2="48" stroke="rgba(120,160,255,.2)" stroke-width="1"/>
-          <!-- wax seal dot -->
-          <circle cx="28" cy="54" r="5" fill="rgba(255,80,80,.5)"/>
-          <circle cx="28" cy="54" r="3" fill="rgba(255,100,100,.6)"/>
+           style="--halo:rgba(245,200,66,.18);right:8%;bottom:20%">
+        <svg width="58" height="76" viewBox="0 0 58 76" fill="none">
           <defs>
             <linearGradient id="scrG" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stop-color="#2a3d8a"/><stop offset="100%" stop-color="#151e50"/>
@@ -552,205 +577,539 @@ input::placeholder { color: #b8c0d4; font-weight: 400; }
               <stop offset="0%" stop-color="#3a50a0"/><stop offset="100%" stop-color="#243070"/>
             </linearGradient>
           </defs>
+          <rect x="8" y="14" width="42" height="50" rx="2" fill="#1a2a5e"/>
+          <rect x="8" y="14" width="42" height="50" rx="2" fill="url(#scrG)" opacity=".9"/>
+          <ellipse cx="29" cy="14" rx="21" ry="6.5" fill="#243070"/>
+          <ellipse cx="29" cy="14" rx="21" ry="6.5" fill="url(#curlG)" opacity=".8"/>
+          <ellipse cx="29" cy="64" rx="21" ry="6.5" fill="#1a2560"/>
+          <line x1="16" y1="26" x2="42" y2="26" stroke="rgba(120,160,255,.45)" stroke-width="1"/>
+          <line x1="16" y1="33" x2="40" y2="33" stroke="rgba(120,160,255,.38)" stroke-width="1"/>
+          <line x1="16" y1="40" x2="42" y2="40" stroke="rgba(120,160,255,.3)" stroke-width="1"/>
+          <line x1="16" y1="47" x2="38" y2="47" stroke="rgba(120,160,255,.22)" stroke-width="1"/>
+          <line x1="16" y1="54" x2="42" y2="54" stroke="rgba(120,160,255,.15)" stroke-width="1"/>
+          <!-- wax seal -->
+          <circle cx="29" cy="59" r="6" fill="rgba(220,60,60,.55)"/>
+          <circle cx="29" cy="59" r="4" fill="rgba(255,80,80,.65)"/>
+          <path d="M26 59 L29 55 L32 59 L29 63 Z" fill="rgba(255,255,255,.2)"/>
         </svg>
       </div>
 
-      <!-- 5. Ink bottle (bottom left) -->
+      <!-- 4. Ink bottle — bottom left, orbits -->
       <div class="fobj" id="obj4"
-           style="--dur:6s;--delay:-3s;--ty:-14px;--rot0:5deg;--rot1:-5deg;--halo:rgba(74,124,255,.2);
-                  left:14%;bottom:18%">
-        <svg width="48" height="60" viewBox="0 0 48 60" fill="none">
-          <!-- bottle body -->
-          <path d="M12 28 Q8 30 8 40 L8 52 Q8 56 12 56 L36 56 Q40 56 40 52 L40 40 Q40 30 36 28 Z"
-                fill="url(#inkG)"/>
-          <!-- bottle neck -->
-          <rect x="17" y="14" width="14" height="16" rx="2" fill="#1a2a5e"/>
-          <!-- cap -->
-          <rect x="15" y="8" width="18" height="8" rx="3" fill="#2a3d8a"/>
-          <rect x="18" y="6" width="12" height="4" rx="2" fill="#3a50a0"/>
-          <!-- ink fill inside -->
-          <path d="M13 38 Q9 40 9 48 L9 52 Q9 55 12 55 L36 55 Q39 55 39 52 L39 48 Q39 40 35 38 Z"
-                fill="rgba(74,124,255,.55)"/>
-          <!-- shine -->
-          <ellipse cx="18" cy="38" rx="4" ry="6" fill="rgba(255,255,255,.08)"/>
-          <!-- label -->
-          <rect x="13" y="34" width="22" height="14" rx="2" fill="rgba(255,255,255,.06)" stroke="rgba(74,124,255,.3)" stroke-width=".5"/>
+           style="--halo:rgba(74,124,255,.22);left:12%;bottom:16%">
+        <svg width="52" height="65" viewBox="0 0 52 65" fill="none">
           <defs>
             <linearGradient id="inkG" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stop-color="#1e2d70"/><stop offset="100%" stop-color="#0d1540"/>
             </linearGradient>
           </defs>
+          <path d="M13 30 Q9 32 9 43 L9 56 Q9 60 13 60 L39 60 Q43 60 43 56 L43 43 Q43 32 39 30 Z" fill="url(#inkG)"/>
+          <rect x="18" y="16" width="16" height="16" rx="2" fill="#1a2a5e"/>
+          <rect x="16" y="9" width="20" height="9" rx="3" fill="#2a3d8a"/>
+          <rect x="19" y="7" width="14" height="4" rx="2" fill="#3a50a0"/>
+          <!-- ink fill -->
+          <path d="M14 40 Q10 42 10 50 L10 56 Q10 59 13 59 L39 59 Q42 59 42 56 L42 50 Q42 42 38 40 Z" fill="rgba(74,124,255,.6)"/>
+          <!-- shine -->
+          <ellipse cx="19" cy="40" rx="4" ry="7" fill="rgba(255,255,255,.09)"/>
+          <!-- label -->
+          <rect x="14" y="37" width="24" height="15" rx="2" fill="rgba(255,255,255,.06)" stroke="rgba(74,124,255,.35)" stroke-width=".5"/>
+          <!-- ink drop falling -->
+          <ellipse cx="26" cy="28" rx="2" ry="3" fill="rgba(74,124,255,.7)"/>
         </svg>
       </div>
 
-      <!-- 6. Stack of books (top left) -->
+      <!-- 5. Book stack — top left, counter-parallax -->
       <div class="fobj" id="obj5"
-           style="--dur:9s;--delay:-1s;--ty:-8px;--rot0:-3deg;--rot1:3deg;--halo:rgba(56,200,216,.15);
-                  left:6%;top:12%">
-        <svg width="60" height="52" viewBox="0 0 60 52" fill="none">
+           style="--halo:rgba(56,200,216,.18);left:5%;top:10%">
+        <svg width="66" height="56" viewBox="0 0 66 56" fill="none">
+          <!-- shadow -->
+          <ellipse cx="33" cy="54" rx="26" ry="3" fill="rgba(0,0,0,.3)"/>
           <!-- bottom book -->
-          <rect x="4" y="34" width="52" height="12" rx="2" fill="#4a7cff" opacity=".7"/>
-          <rect x="4" y="34" width="6" height="12" rx="1" fill="#3a6aee"/>
+          <rect x="4" y="36" width="56" height="14" rx="2" fill="#4a7cff" opacity=".75"/>
+          <rect x="4" y="36" width="7" height="14" rx="1" fill="#3a6aee"/>
+          <rect x="57" y="38" width="3" height="10" rx="1" fill="rgba(200,215,255,.2)"/>
           <!-- mid book -->
-          <rect x="8" y="22" width="46" height="14" rx="2" fill="#7b5ea7" opacity=".8"/>
-          <rect x="8" y="22" width="6" height="14" rx="1" fill="#6a4e96"/>
+          <rect x="8" y="22" width="50" height="16" rx="2" fill="#7b5ea7" opacity=".85"/>
+          <rect x="8" y="22" width="7" height="16" rx="1" fill="#6a4e96"/>
+          <rect x="54" y="24" width="3" height="12" rx="1" fill="rgba(200,215,255,.18)"/>
           <!-- top book -->
-          <rect x="10" y="10" width="42" height="14" rx="2" fill="#2d4cad" opacity=".9"/>
-          <rect x="10" y="10" width="6" height="14" rx="1" fill="#1e3d9e"/>
-          <!-- pages on right -->
-          <rect x="52" y="12" width="3" height="10" rx="1" fill="rgba(200,210,255,.2)"/>
-          <rect x="54" y="36" width="2" height="8" rx="1" fill="rgba(200,210,255,.15)"/>
+          <rect x="11" y="9" width="44" height="15" rx="2" fill="#2d4cad" opacity=".9"/>
+          <rect x="11" y="9" width="7" height="15" rx="1" fill="#1e3d9e"/>
+          <rect x="51" y="11" width="3" height="11" rx="1" fill="rgba(200,215,255,.15)"/>
+          <!-- title lines -->
+          <rect x="22" y="14" width="20" height="1.5" rx=".5" fill="rgba(150,180,255,.35)"/>
+          <rect x="24" y="18" width="16" height="1" rx=".5" fill="rgba(150,180,255,.25)"/>
         </svg>
       </div>
 
-      <!-- 7. Glowing letters / typography (top center) -->
+      <!-- 6. Typography "Aa" — top center, dreamy drift -->
       <div class="fobj" id="obj6"
-           style="--dur:7.5s;--delay:-.5s;--ty:-20px;--rot0:-2deg;--rot1:2deg;--halo:rgba(74,124,255,.3);
-                  left:50%;top:14%;transform:translateX(-50%)">
-        <svg width="80" height="44" viewBox="0 0 80 44" fill="none">
-          <!-- decorative text "Aa" -->
-          <text x="8" y="36" font-family="Georgia,serif" font-size="38" font-style="italic"
-                fill="url(#txtG)" opacity=".85">Aa</text>
-          <!-- small sparkle dots -->
-          <circle cx="66" cy="8"  r="2.5" fill="rgba(74,124,255,.8)"/>
-          <circle cx="72" cy="16" r="1.5" fill="rgba(56,200,216,.7)"/>
-          <circle cx="62" cy="20" r="1.5" fill="rgba(74,124,255,.6)"/>
+           style="--halo:rgba(74,124,255,.35);left:50%;top:12%;transform:translateX(-50%)">
+        <svg width="88" height="50" viewBox="0 0 88 50" fill="none">
           <defs>
             <linearGradient id="txtG" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="rgba(150,190,255,.9)"/>
-              <stop offset="100%" stop-color="rgba(74,124,255,.7)"/>
+              <stop offset="0%" stop-color="rgba(160,200,255,.95)"/>
+              <stop offset="100%" stop-color="rgba(74,124,255,.75)"/>
             </linearGradient>
           </defs>
+          <text x="6" y="42" font-family="Georgia,serif" font-size="42" font-style="italic" fill="url(#txtG)" opacity=".88">Aa</text>
+          <circle cx="74" cy="9"  r="3"   fill="rgba(74,124,255,.9)"/>
+          <circle cx="80" cy="18" r="2"   fill="rgba(56,200,216,.8)"/>
+          <circle cx="70" cy="22" r="1.5" fill="rgba(74,124,255,.7)"/>
+          <circle cx="82" cy="26" r="1"   fill="rgba(245,200,66,.7)"/>
         </svg>
       </div>
 
-      <!-- 8. Bookmark ribbon (right mid) -->
+      <!-- 7. Bookmark ribbon — right mid, magnetic -->
       <div class="fobj" id="obj7"
-           style="--dur:5s;--delay:-2.8s;--ty:-10px;--rot0:10deg;--rot1:-6deg;--halo:rgba(255,80,120,.15);
-                  right:6%;top:48%">
-        <svg width="28" height="56" viewBox="0 0 28 56" fill="none">
-          <path d="M4 2 L24 2 L24 50 L14 42 L4 50 Z" fill="url(#bkmG)"/>
-          <line x1="4" y1="14" x2="24" y2="14" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+           style="--halo:rgba(255,80,120,.18);right:5%;top:46%">
+        <svg width="30" height="60" viewBox="0 0 30 60" fill="none">
           <defs>
             <linearGradient id="bkmG" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#ff5080"/><stop offset="100%" stop-color="#cc3060"/>
+              <stop offset="0%" stop-color="#ff6090"/><stop offset="100%" stop-color="#cc2055"/>
             </linearGradient>
           </defs>
+          <path d="M4 2 L26 2 L26 54 L15 46 L4 54 Z" fill="url(#bkmG)"/>
+          <line x1="4" y1="14" x2="26" y2="14" stroke="rgba(255,255,255,.25)" stroke-width="1"/>
+          <line x1="4" y1="20" x2="26" y2="20" stroke="rgba(255,255,255,.15)" stroke-width=".5"/>
+          <!-- star on bookmark -->
+          <path d="M15 6 L16.5 10.5 L21 10.5 L17.5 13 L19 17.5 L15 14.5 L11 17.5 L12.5 13 L9 10.5 L13.5 10.5 Z" fill="rgba(255,255,255,.35)"/>
+        </svg>
+      </div>
+
+      <!-- 8. Hourglass — mid left, drifts -->
+      <div class="fobj" id="obj8"
+           style="--halo:rgba(245,200,66,.2);left:18%;top:56%">
+        <svg width="44" height="72" viewBox="0 0 44 72" fill="none">
+          <defs>
+            <linearGradient id="hgG" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f5c842"/><stop offset="100%" stop-color="#d4962a"/>
+            </linearGradient>
+          </defs>
+          <!-- top glass -->
+          <path d="M6 4 L38 4 L26 36 L18 36 Z" fill="rgba(20,35,90,.7)" stroke="url(#hgG)" stroke-width="1.5"/>
+          <!-- bottom glass -->
+          <path d="M18 36 L26 36 L38 68 L6 68 Z" fill="rgba(20,35,90,.7)" stroke="url(#hgG)" stroke-width="1.5"/>
+          <!-- sand top -->
+          <path d="M10 8 L34 8 L26 32 L18 32 Z" fill="rgba(245,200,66,.2)"/>
+          <!-- sand bottom (piled) -->
+          <path d="M18 60 L26 60 L34 66 L10 66 Z" fill="rgba(245,200,66,.35)"/>
+          <!-- neck glow -->
+          <ellipse cx="22" cy="36" rx="4" ry="2" fill="rgba(245,200,66,.5)"/>
+          <!-- top bar & bottom bar -->
+          <rect x="4" y="2" width="36" height="4" rx="2" fill="url(#hgG)"/>
+          <rect x="4" y="66" width="36" height="4" rx="2" fill="url(#hgG)"/>
+          <!-- sand falling -->
+          <line x1="22" y1="38" x2="22" y2="55" stroke="rgba(245,200,66,.6)" stroke-width="1" stroke-dasharray="1 3"/>
+        </svg>
+      </div>
+
+      <!-- 9. Candle — bottom center, parallax -->
+      <div class="fobj" id="obj9"
+           style="--halo:rgba(255,160,60,.2);left:48%;bottom:8%">
+        <svg width="38" height="80" viewBox="0 0 38 80" fill="none">
+          <defs>
+            <radialGradient id="flameG" cx="50%" cy="70%" r="50%">
+              <stop offset="0%" stop-color="rgba(255,240,180,1)"/>
+              <stop offset="40%" stop-color="rgba(255,160,40,.9)"/>
+              <stop offset="100%" stop-color="rgba(255,60,0,.0)"/>
+            </radialGradient>
+            <linearGradient id="candleG" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#d4c4a8"/><stop offset="50%" stop-color="#f0e0c0"/><stop offset="100%" stop-color="#b8a890"/>
+            </linearGradient>
+          </defs>
+          <!-- candle body -->
+          <rect x="10" y="30" width="18" height="44" rx="3" fill="url(#candleG)"/>
+          <!-- wax drip 1 -->
+          <path d="M10 38 Q6 42 8 48 L10 50 L10 38Z" fill="rgba(240,224,192,.8)"/>
+          <!-- wax drip 2 -->
+          <path d="M28 44 Q32 48 30 54 L28 56 L28 44Z" fill="rgba(240,224,192,.7)"/>
+          <!-- wick -->
+          <line x1="19" y1="28" x2="19" y2="32" stroke="#333" stroke-width="1.5"/>
+          <!-- flame -->
+          <ellipse cx="19" cy="18" rx="7" ry="12" fill="url(#flameG)" opacity=".9"/>
+          <ellipse cx="19" cy="22" rx="4" ry="7" fill="rgba(255,200,80,.8)"/>
+          <ellipse cx="19" cy="25" rx="2.5" ry="4" fill="rgba(255,240,180,.9)"/>
+          <!-- glow around flame -->
+          <ellipse cx="19" cy="20" rx="12" ry="16" fill="rgba(255,140,30,.08)"/>
+          <!-- candle top -->
+          <ellipse cx="19" cy="30" rx="9" ry="3" fill="rgba(255,235,200,.9)"/>
+          <!-- holder plate -->
+          <ellipse cx="19" cy="74" rx="12" ry="4" fill="#8a7a60"/>
+          <ellipse cx="19" cy="73" rx="12" ry="3.5" fill="#a09070"/>
+        </svg>
+      </div>
+
+      <!-- 10. Open Notebook — right lower, drift -->
+      <div class="fobj" id="obj10"
+           style="--halo:rgba(150,220,180,.18);right:14%;bottom:28%">
+        <svg width="70" height="56" viewBox="0 0 70 56" fill="none">
+          <defs>
+            <linearGradient id="nbL" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#e8f2e8"/><stop offset="100%" stop-color="#c8ddc8"/>
+            </linearGradient>
+            <linearGradient id="nbR" x1="1" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ddeedd"/><stop offset="100%" stop-color="#b8ccb8"/>
+            </linearGradient>
+          </defs>
+          <!-- left page -->
+          <path d="M35 4 Q18 3 4 8 L4 50 Q18 46 35 48 Z" fill="url(#nbL)" opacity=".85"/>
+          <!-- right page -->
+          <path d="M35 4 Q52 3 66 8 L66 50 Q52 46 35 48 Z" fill="url(#nbR)" opacity=".85"/>
+          <!-- spine -->
+          <rect x="32.5" y="4" width="5" height="44" rx="2" fill="#6a8f6a" opacity=".7"/>
+          <!-- ruled lines left -->
+          <line x1="10" y1="16" x2="32" y2="15" stroke="rgba(60,120,80,.25)" stroke-width=".8"/>
+          <line x1="10" y1="22" x2="32" y2="21" stroke="rgba(60,120,80,.22)" stroke-width=".8"/>
+          <line x1="10" y1="28" x2="32" y2="27" stroke="rgba(60,120,80,.2)" stroke-width=".8"/>
+          <line x1="10" y1="34" x2="32" y2="33" stroke="rgba(60,120,80,.18)" stroke-width=".8"/>
+          <line x1="10" y1="40" x2="32" y2="39" stroke="rgba(60,120,80,.15)" stroke-width=".8"/>
+          <!-- ruled lines right -->
+          <line x1="38" y1="16" x2="60" y2="15" stroke="rgba(60,120,80,.25)" stroke-width=".8"/>
+          <line x1="38" y1="22" x2="60" y2="21" stroke="rgba(60,120,80,.22)" stroke-width=".8"/>
+          <line x1="38" y1="28" x2="60" y2="27" stroke="rgba(60,120,80,.2)" stroke-width=".8"/>
+          <line x1="38" y1="34" x2="60" y2="33" stroke="rgba(60,120,80,.18)" stroke-width=".8"/>
+          <!-- written text squiggles (left) -->
+          <path d="M10 16 Q16 14 22 16 Q28 18 32 15" stroke="rgba(40,80,60,.3)" stroke-width=".6" fill="none"/>
+          <path d="M10 22 Q15 20 20 22 Q26 24 32 21" stroke="rgba(40,80,60,.25)" stroke-width=".6" fill="none"/>
+          <!-- corner fold -->
+          <path d="M60 44 L66 50 L60 50 Z" fill="rgba(0,0,0,.1)"/>
+        </svg>
+      </div>
+
+      <!-- 11. Magnifying Glass — top mid-left, parallax -->
+      <div class="fobj" id="obj11"
+           style="--halo:rgba(56,200,216,.2);left:22%;top:8%">
+        <svg width="56" height="64" viewBox="0 0 56 64" fill="none">
+          <defs>
+            <radialGradient id="lensG" cx="40%" cy="35%" r="55%">
+              <stop offset="0%" stop-color="rgba(150,200,255,.35)"/>
+              <stop offset="100%" stop-color="rgba(30,60,150,.15)"/>
+            </radialGradient>
+          </defs>
+          <!-- lens ring -->
+          <circle cx="24" cy="24" r="20" fill="none" stroke="#4a7cff" stroke-width="2.5" opacity=".8"/>
+          <!-- lens fill -->
+          <circle cx="24" cy="24" r="18" fill="url(#lensG)"/>
+          <!-- lens shine -->
+          <ellipse cx="18" cy="16" rx="6" ry="4" fill="rgba(255,255,255,.18)" transform="rotate(-20 18 16)"/>
+          <!-- handle -->
+          <line x1="38" y1="38" x2="52" y2="56" stroke="#4a7cff" stroke-width="3.5" stroke-linecap="round" opacity=".8"/>
+          <line x1="38" y1="38" x2="52" y2="56" stroke="rgba(150,190,255,.4)" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- reflection dot -->
+          <circle cx="32" cy="18" r="2" fill="rgba(255,255,255,.2)"/>
+        </svg>
+      </div>
+
+      <!-- 12. Laurel wreath — mid-right top, orbits -->
+      <div class="fobj" id="obj12"
+           style="--halo:rgba(100,200,100,.2);right:20%;top:24%">
+        <svg width="60" height="50" viewBox="0 0 60 50" fill="none">
+          <!-- left branch -->
+          <path d="M30 25 C22 20 14 16 10 12" stroke="rgba(80,160,80,.6)" stroke-width="1.5" fill="none"/>
+          <ellipse cx="14" cy="18" rx="6" ry="3.5" fill="rgba(80,160,80,.5)" transform="rotate(-40 14 18)"/>
+          <ellipse cx="10" cy="11" rx="5" ry="3" fill="rgba(80,160,80,.45)" transform="rotate(-55 10 11)"/>
+          <ellipse cx="18" cy="24" rx="5.5" ry="3" fill="rgba(80,160,80,.5)" transform="rotate(-30 18 24)"/>
+          <ellipse cx="22" cy="16" rx="5" ry="3" fill="rgba(80,160,80,.45)" transform="rotate(-50 22 16)"/>
+          <!-- right branch -->
+          <path d="M30 25 C38 20 46 16 50 12" stroke="rgba(80,160,80,.6)" stroke-width="1.5" fill="none"/>
+          <ellipse cx="46" cy="18" rx="6" ry="3.5" fill="rgba(80,160,80,.5)" transform="rotate(40 46 18)"/>
+          <ellipse cx="50" cy="11" rx="5" ry="3" fill="rgba(80,160,80,.45)" transform="rotate(55 50 11)"/>
+          <ellipse cx="42" cy="24" rx="5.5" ry="3" fill="rgba(80,160,80,.5)" transform="rotate(30 42 24)"/>
+          <ellipse cx="38" cy="16" rx="5" ry="3" fill="rgba(80,160,80,.45)" transform="rotate(50 38 16)"/>
+          <!-- bottom curve -->
+          <path d="M10 30 C18 36 30 38 42 36 L50 30" stroke="rgba(80,160,80,.5)" stroke-width="1.5" fill="none"/>
+          <ellipse cx="18" cy="34" rx="5" ry="3" fill="rgba(80,160,80,.4)" transform="rotate(10 18 34)"/>
+          <ellipse cx="30" cy="37" rx="5" ry="3" fill="rgba(80,160,80,.4)"/>
+          <ellipse cx="42" cy="34" rx="5" ry="3" fill="rgba(80,160,80,.4)" transform="rotate(-10 42 34)"/>
+          <!-- center ribbon -->
+          <path d="M24 42 L30 46 L36 42 L34 44 L30 48 L26 44 Z" fill="rgba(245,200,66,.5)"/>
+        </svg>
+      </div>
+
+      <!-- 13. Spectacles / Glasses — lower mid, drifts -->
+      <div class="fobj" id="obj13"
+           style="--halo:rgba(74,124,255,.18);left:36%;bottom:12%">
+        <svg width="72" height="32" viewBox="0 0 72 32" fill="none">
+          <defs>
+            <radialGradient id="glassL" cx="40%" cy="35%" r="55%">
+              <stop offset="0%" stop-color="rgba(120,180,255,.3)"/>
+              <stop offset="100%" stop-color="rgba(30,60,150,.1)"/>
+            </radialGradient>
+            <radialGradient id="glassR" cx="60%" cy="35%" r="55%">
+              <stop offset="0%" stop-color="rgba(120,180,255,.3)"/>
+              <stop offset="100%" stop-color="rgba(30,60,150,.1)"/>
+            </radialGradient>
+          </defs>
+          <!-- left arm -->
+          <line x1="2" y1="14" x2="12" y2="14" stroke="#4a7cff" stroke-width="2" stroke-linecap="round" opacity=".75"/>
+          <!-- left lens -->
+          <circle cx="22" cy="14" r="10" fill="none" stroke="#4a7cff" stroke-width="2" opacity=".8"/>
+          <circle cx="22" cy="14" r="8.5" fill="url(#glassL)"/>
+          <ellipse cx="18" cy="10" rx="3.5" ry="2.5" fill="rgba(255,255,255,.15)" transform="rotate(-20 18 10)"/>
+          <!-- bridge -->
+          <path d="M32 14 Q36 10 40 14" stroke="#4a7cff" stroke-width="2" fill="none" opacity=".8"/>
+          <!-- right lens -->
+          <circle cx="50" cy="14" r="10" fill="none" stroke="#4a7cff" stroke-width="2" opacity=".8"/>
+          <circle cx="50" cy="14" r="8.5" fill="url(#glassR)"/>
+          <ellipse cx="46" cy="10" rx="3.5" ry="2.5" fill="rgba(255,255,255,.15)" transform="rotate(-20 46 10)"/>
+          <!-- right arm -->
+          <line x1="60" y1="14" x2="70" y2="14" stroke="#4a7cff" stroke-width="2" stroke-linecap="round" opacity=".75"/>
+        </svg>
+      </div>
+
+      <!-- 14. Rose — top far right, parallax -->
+      <div class="fobj" id="obj14"
+           style="--halo:rgba(255,80,120,.2);right:4%;top:8%">
+        <svg width="44" height="58" viewBox="0 0 44 58" fill="none">
+          <!-- stem -->
+          <path d="M22 38 Q18 46 20 58" stroke="rgba(60,120,60,.7)" stroke-width="2" fill="none"/>
+          <!-- leaves -->
+          <path d="M20 46 Q10 40 12 50 Q18 50 20 46Z" fill="rgba(60,130,60,.5)"/>
+          <path d="M21 50 Q32 45 28 55 Q22 54 21 50Z" fill="rgba(60,130,60,.45)"/>
+          <!-- petals outer -->
+          <ellipse cx="22" cy="28" rx="10" ry="12" fill="rgba(220,50,90,.6)"/>
+          <ellipse cx="14" cy="30" rx="8" ry="10" fill="rgba(220,50,90,.55)" transform="rotate(-20 14 30)"/>
+          <ellipse cx="30" cy="30" rx="8" ry="10" fill="rgba(220,50,90,.55)" transform="rotate(20 30 30)"/>
+          <ellipse cx="18" cy="20" rx="7" ry="9" fill="rgba(230,60,100,.6)" transform="rotate(-10 18 20)"/>
+          <ellipse cx="26" cy="20" rx="7" ry="9" fill="rgba(230,60,100,.6)" transform="rotate(10 26 20)"/>
+          <!-- petals inner -->
+          <ellipse cx="22" cy="24" rx="7" ry="9" fill="rgba(240,80,110,.7)"/>
+          <ellipse cx="22" cy="22" rx="5" ry="7" fill="rgba(250,100,130,.75)"/>
+          <!-- center -->
+          <circle cx="22" cy="20" r="4" fill="rgba(255,140,150,.8)"/>
+          <circle cx="22" cy="20" r="2" fill="rgba(255,200,200,.6)"/>
+        </svg>
+      </div>
+
+      <!-- 15. Inkwell with splatter — left top, orbit -->
+      <div class="fobj" id="obj15"
+           style="--halo:rgba(74,124,255,.18);left:30%;top:22%">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <!-- splatter drops -->
+          <circle cx="8"  cy="8"  r="2"   fill="rgba(74,124,255,.5)"/>
+          <circle cx="32" cy="5"  r="1.5" fill="rgba(74,124,255,.45)"/>
+          <circle cx="35" cy="18" r="1"   fill="rgba(74,124,255,.4)"/>
+          <circle cx="5"  cy="25" r="1.5" fill="rgba(74,124,255,.45)"/>
+          <circle cx="28" cy="32" r="1"   fill="rgba(74,124,255,.4)"/>
+          <!-- inkwell -->
+          <path d="M12 18 Q10 20 10 28 L10 34 Q10 36 12 36 L28 36 Q30 36 30 34 L30 28 Q30 20 28 18 Z" fill="#0d1540"/>
+          <path d="M12 18 Q10 20 10 28 L10 34 Q10 36 12 36 L28 36 Q30 36 30 34 L30 28 Q30 20 28 18 Z" fill="rgba(74,124,255,.3)"/>
+          <ellipse cx="20" cy="18" rx="9" ry="3.5" fill="#1a2a6e"/>
+          <ellipse cx="20" cy="24" rx="7" ry="2" fill="rgba(74,124,255,.5)"/>
+          <!-- shine -->
+          <ellipse cx="15" cy="22" rx="3" ry="5" fill="rgba(255,255,255,.06)"/>
+        </svg>
+      </div>
+
+      <!-- 16. Feather (second, smaller) — mid bottom left, drift -->
+      <div class="fobj" id="obj16"
+           style="--halo:rgba(200,160,255,.18);left:3%;bottom:35%">
+        <svg width="32" height="60" viewBox="0 0 32 60" fill="none">
+          <defs>
+            <linearGradient id="f2G" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="rgba(180,150,255,.8)"/>
+              <stop offset="100%" stop-color="rgba(123,94,167,.5)"/>
+            </linearGradient>
+          </defs>
+          <path d="M16 2 C26 8 30 22 28 36 C26 44 20 50 16 58 C12 50 6 44 4 36 C2 22 6 8 16 2Z" fill="url(#f2G)" opacity=".85"/>
+          <line x1="16" y1="2" x2="16" y2="58" stroke="rgba(220,200,255,.6)" stroke-width="1"/>
+          <path d="M16 14 C11 16 7 18 4 21" stroke="rgba(220,200,255,.3)" stroke-width=".6" fill="none"/>
+          <path d="M16 22 C11 24 7 27 4 30" stroke="rgba(220,200,255,.25)" stroke-width=".6" fill="none"/>
+          <path d="M16 14 C21 16 25 18 28 21" stroke="rgba(220,200,255,.3)" stroke-width=".6" fill="none"/>
+          <path d="M16 22 C21 24 25 27 28 30" stroke="rgba(220,200,255,.25)" stroke-width=".6" fill="none"/>
+          <path d="M14 52 L16 58 L18 52 L16 48Z" fill="rgba(123,94,167,.8)"/>
         </svg>
       </div>
 
     </div><!-- /floatLayer -->
-
   </div><!-- /world-panel -->
-
 </div><!-- /card -->
 
 <div id="toast"></div>
 
 <script>
 // ═══════════════════════════════════════════════════════
-//  PARALLAX FLOATING OBJECTS
-//  Each object has a depth factor — deeper = moves less
+//  OBJECT BEHAVIOR SYSTEM
+//  modes: parallax | drift | orbit | breathe | magnetic
 // ═══════════════════════════════════════════════════════
-
 const panel = document.getElementById('worldPanel');
 
-// depth: 0=stationary, 1=max movement
-// Each object: [element_id, depth, base_x_offset, base_y_offset]
 const OBJECTS = [
-  { id:'obj0', depth:0.04 },  // center book — barely moves (anchor)
-  { id:'obj1', depth:0.14 },  // quill — floats a lot
-  { id:'obj2', depth:0.10 },  // closed book
-  { id:'obj3', depth:0.12 },  // scroll
-  { id:'obj4', depth:0.08 },  // ink bottle
-  { id:'obj5', depth:0.16 },  // book stack — moves most
-  { id:'obj6', depth:0.06 },  // letters
-  { id:'obj7', depth:0.18 },  // bookmark — moves most
+  { id:'obj0',  mode:'breathe',   bobAmp:5,  bobSpeed:.0007, rotRange:2,  lerpSpeed:.04,  parallaxStrength:0,
+    desc:'center open book — breathes' },
+  { id:'obj1',  mode:'parallax',  bobAmp:18, bobSpeed:.0014, rotRange:14, lerpSpeed:.09,  parallaxStrength:40,
+    desc:'large quill — eager cursor' },
+  { id:'obj2',  mode:'drift',     bobAmp:10, bobSpeed:.0009, rotRange:8,  lerpSpeed:.03,  parallaxStrength:0,
+    driftRadX:20, driftRadY:14, driftSpeed:.00033,
+    desc:'closed book — autonomous drift' },
+  { id:'obj3',  mode:'parallax',  bobAmp:8,  bobSpeed:.0011, rotRange:7,  lerpSpeed:.035, parallaxStrength:22,
+    desc:'scroll — lazy cursor' },
+  { id:'obj4',  mode:'orbit',     bobAmp:6,  bobSpeed:.0013, rotRange:5,  lerpSpeed:.05,  parallaxStrength:0,
+    orbitCX:0, orbitCY:10, orbitRX:16, orbitRY:10, orbitSpeed:.00042,
+    desc:'ink bottle — orbits' },
+  { id:'obj5',  mode:'parallax',  bobAmp:7,  bobSpeed:.0007, rotRange:4,  lerpSpeed:.06,  parallaxStrength:-30,
+    desc:'book stack — counter-parallax' },
+  { id:'obj6',  mode:'drift',     bobAmp:22, bobSpeed:.0006, rotRange:3,  lerpSpeed:.02,  parallaxStrength:0,
+    driftRadX:12, driftRadY:22, driftSpeed:.00026,
+    desc:'Aa typography — dreamy drift' },
+  { id:'obj7',  mode:'magnetic',  bobAmp:12, bobSpeed:.0018, rotRange:18, lerpSpeed:.11,  parallaxStrength:16,
+    magnetDist:190, magnetStrength:35,
+    desc:'bookmark — magnetic' },
+  { id:'obj8',  mode:'drift',     bobAmp:14, bobSpeed:.001,  rotRange:10, lerpSpeed:.025, parallaxStrength:0,
+    driftRadX:16, driftRadY:10, driftSpeed:.0004,
+    desc:'hourglass — drifts' },
+  { id:'obj9',  mode:'parallax',  bobAmp:9,  bobSpeed:.0012, rotRange:6,  lerpSpeed:.045, parallaxStrength:18,
+    desc:'candle — follows cursor gently' },
+  { id:'obj10', mode:'drift',     bobAmp:11, bobSpeed:.0008, rotRange:9,  lerpSpeed:.02,  parallaxStrength:0,
+    driftRadX:14, driftRadY:18, driftSpeed:.00038,
+    desc:'open notebook — drifts' },
+  { id:'obj11', mode:'parallax',  bobAmp:10, bobSpeed:.0015, rotRange:12, lerpSpeed:.07,  parallaxStrength:28,
+    desc:'magnifying glass — cursor follow' },
+  { id:'obj12', mode:'orbit',     bobAmp:5,  bobSpeed:.001,  rotRange:4,  lerpSpeed:.04,  parallaxStrength:0,
+    orbitCX:5, orbitCY:5, orbitRX:12, orbitRY:8, orbitSpeed:.00038,
+    desc:'laurel wreath — orbits' },
+  { id:'obj13', mode:'drift',     bobAmp:8,  bobSpeed:.0009, rotRange:6,  lerpSpeed:.022, parallaxStrength:0,
+    driftRadX:18, driftRadY:8,  driftSpeed:.00044,
+    desc:'spectacles — drifts' },
+  { id:'obj14', mode:'parallax',  bobAmp:15, bobSpeed:.0013, rotRange:16, lerpSpeed:.08,  parallaxStrength:-24,
+    desc:'rose — counter-parallax' },
+  { id:'obj15', mode:'orbit',     bobAmp:7,  bobSpeed:.0016, rotRange:7,  lerpSpeed:.05,  parallaxStrength:0,
+    orbitCX:-8, orbitCY:0, orbitRX:20, orbitRY:12, orbitSpeed:.0005,
+    desc:'inkwell splatter — orbits' },
+  { id:'obj16', mode:'drift',     bobAmp:16, bobSpeed:.0007, rotRange:12, lerpSpeed:.018, parallaxStrength:0,
+    driftRadX:10, driftRadY:24, driftSpeed:.00029,
+    desc:'small feather — dreamy drift' },
 ];
 
 const objs = OBJECTS.map(o => ({
+  ...o,
   el: document.getElementById(o.id),
-  depth: o.depth,
-  cx: 0, cy: 0,  // current offset
+  cx: 0, cy: 0,
+  bobT: Math.random() * Math.PI * 2,
+  driftT: Math.random() * Math.PI * 2,
+  orbitT: Math.random() * Math.PI * 2,
 }));
 
-// Connection line endpoints (pairs of object indices)
-const CONN_PAIRS = [[0,1],[0,2],[0,3],[0,4],[1,6]];
-const connLines = ['cl1','cl2','cl3','cl4','cl5'].map(id => document.getElementById(id));
+// Connection pairs — more connections for a richer web
+const CONN_PAIRS = [[0,1],[0,3],[0,7],[1,11],[2,8],[4,9],[5,12],[6,14]];
+const connLines  = ['cl1','cl2','cl3','cl4','cl5','cl6','cl7'].map(id => document.getElementById(id));
 
-let mouseX = 0, mouseY = 0;
-let smX = 0, smY = 0;
+let rawMouseX = 0, rawMouseY = 0;
+let smMouseX  = 0, smMouseY  = 0;
+let absMouseX = 0, absMouseY = 0;
 let panelRect = panel.getBoundingClientRect();
 
-window.addEventListener('resize', () => { panelRect = panel.getBoundingClientRect(); });
-setTimeout(() => { panelRect = panel.getBoundingClientRect(); }, 300);
+function refreshRect() { panelRect = panel.getBoundingClientRect(); }
+window.addEventListener('resize', refreshRect);
+setTimeout(refreshRect, 300);
+setTimeout(refreshRect, 900);
 
 document.addEventListener('mousemove', e => {
-  // normalize mouse relative to panel center (-1 to 1)
-  panelRect = panel.getBoundingClientRect();
-  mouseX = ((e.clientX - panelRect.left - panelRect.width  / 2) / (panelRect.width  / 2));
-  mouseY = ((e.clientY - panelRect.top  - panelRect.height / 2) / (panelRect.height / 2));
-  // clamp
-  mouseX = Math.max(-1, Math.min(1, mouseX));
-  mouseY = Math.max(-1, Math.min(1, mouseY));
+  absMouseX = e.clientX; absMouseY = e.clientY;
+  refreshRect();
+  rawMouseX = Math.max(-1, Math.min(1, (e.clientX - panelRect.left - panelRect.width/2)  / (panelRect.width/2)));
+  rawMouseY = Math.max(-1, Math.min(1, (e.clientY - panelRect.top  - panelRect.height/2) / (panelRect.height/2)));
 });
 
-// Update SVG connection lines
 function updateLines() {
-  CONN_PAIRS.forEach((pair, i) => {
-    const a = objs[pair[0]].el;
-    const b = objs[pair[1]].el;
-    if (!a || !b || !connLines[i]) return;
-    const ar = a.getBoundingClientRect();
-    const br = b.getBoundingClientRect();
-    const pr = panelRect;
-    const ax = ar.left + ar.width/2  - pr.left;
-    const ay = ar.top  + ar.height/2 - pr.top;
-    const bx = br.left + br.width/2  - pr.left;
-    const by_ = br.top  + br.height/2 - pr.top;
-    connLines[i].setAttribute('x1', ax);
-    connLines[i].setAttribute('y1', ay);
-    connLines[i].setAttribute('x2', bx);
-    connLines[i].setAttribute('y2', by_);
+  CONN_PAIRS.forEach(([ai, bi], i) => {
+    const a = objs[ai]?.el, b = objs[bi]?.el, ln = connLines[i];
+    if (!a || !b || !ln) return;
+    const ar = a.getBoundingClientRect(), br = b.getBoundingClientRect(), pr = panelRect;
+    ln.setAttribute('x1', (ar.left + ar.width /2 - pr.left).toFixed(1));
+    ln.setAttribute('y1', (ar.top  + ar.height/2 - pr.top ).toFixed(1));
+    ln.setAttribute('x2', (br.left + br.width /2 - pr.left).toFixed(1));
+    ln.setAttribute('y2', (br.top  + br.height/2 - pr.top ).toFixed(1));
   });
 }
 
-// RAF loop
-const MAX_MOVE = 55; // max px travel
-const LR = 0.055;
+let lastT = null;
+requestAnimationFrame(function loop(ts) {
+  if (!lastT) lastT = ts;
+  const dt = Math.min(ts - lastT, 50);
+  lastT = ts;
 
-requestAnimationFrame(function loop() {
-  smX += (mouseX - smX) * LR;
-  smY += (mouseY - smY) * LR;
+  smMouseX += (rawMouseX - smMouseX) * 0.06;
+  smMouseY += (rawMouseY - smMouseY) * 0.06;
 
   objs.forEach(obj => {
     if (!obj.el) return;
-    const tx = -smX * MAX_MOVE * obj.depth * 8;
-    const ty = -smY * MAX_MOVE * obj.depth * 8;
-    obj.cx += (tx - obj.cx) * 0.08;
-    obj.cy += (ty - obj.cy) * 0.08;
-    // Preserve existing CSS transform (translateX/Y from positioning)
-    // We add parallax as additional translate
-    const base = obj.el.style.transform || '';
-    // strip previous parallax
-    const clean = base.replace(/translateZ\([^)]*\)| ?parallax\([^)]*\)/g, '');
-    obj.el.style.transform = clean + ` translate(${obj.cx.toFixed(1)}px, ${obj.cy.toFixed(1)}px)`;
+    obj.bobT   += dt;
+    obj.driftT += dt;
+    obj.orbitT += dt;
+
+    let tx = 0, ty = 0, extraRot = 0, extraScale = 1;
+    const bob = Math.sin(obj.bobT * obj.bobSpeed) * obj.bobAmp;
+
+    switch (obj.mode) {
+      case 'parallax':
+        tx = smMouseX * obj.parallaxStrength;
+        ty = smMouseY * obj.parallaxStrength * 0.7;
+        obj.cx += (tx - obj.cx) * obj.lerpSpeed;
+        obj.cy += (ty - obj.cy) * obj.lerpSpeed;
+        extraRot = smMouseX * obj.rotRange;
+        break;
+
+      case 'drift':
+        tx = Math.sin(obj.driftT * obj.driftSpeed) * obj.driftRadX;
+        ty = Math.sin(obj.driftT * obj.driftSpeed * 2) * obj.driftRadY;
+        obj.cx += (tx - obj.cx) * 0.016;
+        obj.cy += (ty - obj.cy) * 0.016;
+        extraRot = Math.sin(obj.driftT * obj.driftSpeed * 1.3) * obj.rotRange;
+        break;
+
+      case 'orbit':
+        tx = Math.cos(obj.orbitT * obj.orbitSpeed) * obj.orbitRX + obj.orbitCX;
+        ty = Math.sin(obj.orbitT * obj.orbitSpeed) * obj.orbitRY + obj.orbitCY;
+        obj.cx += (tx - obj.cx) * 0.04;
+        obj.cy += (ty - obj.cy) * 0.04;
+        extraRot = Math.sin(obj.orbitT * obj.orbitSpeed) * obj.rotRange;
+        break;
+
+      case 'breathe':
+        extraScale = 1 + Math.sin(obj.bobT * 0.0006) * 0.04;
+        extraRot   = Math.sin(obj.bobT * 0.0004) * obj.rotRange;
+        obj.cx += (0 - obj.cx) * 0.02;
+        obj.cy += (0 - obj.cy) * 0.02;
+        break;
+
+      case 'magnetic': {
+        const er = obj.el.getBoundingClientRect();
+        const ecx = er.left + er.width/2, ecy = er.top + er.height/2;
+        const dx = absMouseX - ecx, dy = absMouseY - ecy;
+        const dist = Math.hypot(dx, dy) || 1;
+        if (dist < obj.magnetDist) {
+          const pull = (1 - dist / obj.magnetDist) * obj.magnetStrength;
+          tx = (dx / dist) * pull;
+          ty = (dy / dist) * pull;
+        } else {
+          tx = smMouseX * obj.parallaxStrength * 0.5;
+          ty = smMouseY * obj.parallaxStrength * 0.5;
+        }
+        obj.cx += (tx - obj.cx) * obj.lerpSpeed;
+        obj.cy += (ty - obj.cy) * obj.lerpSpeed;
+        extraRot = smMouseX * obj.rotRange;
+        break;
+      }
+    }
+
+    obj.el.style.transform =
+      `translate(${obj.cx.toFixed(1)}px, ${(obj.cy + bob).toFixed(1)}px)` +
+      ` rotate(${extraRot.toFixed(2)}deg)` +
+      ` scale(${extraScale.toFixed(3)})`;
   });
 
   updateLines();
   requestAnimationFrame(loop);
 });
 
-// ═══════════════════════════════════════════════════════
-//  FORM
-// ═══════════════════════════════════════════════════════
+// ── FORM ──
 function togglePw() {
-  const i = document.getElementById('pw');
-  const b = document.getElementById('pwBtn');
+  const i = document.getElementById('pw'), b = document.getElementById('pwBtn');
   i.type = i.type === 'password' ? 'text' : 'password';
   b.textContent = i.type === 'password' ? '👁️' : '🙈';
 }
-
 function doSignUp() {
   const fn = document.getElementById('fn').value.trim();
   const ln = document.getElementById('ln').value.trim();
@@ -762,11 +1121,9 @@ function doSignUp() {
   if (!ok)                 return toast('📜 Please agree to the Terms first.');
   toast(`✨ Welcome, ${fn}! Your library awaits.`);
 }
-
 function toast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
+  t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3200);
 }
 </script>
